@@ -1,5 +1,5 @@
 //
-// Created by Alberto Sinigaglia on 03/04/2020.
+
 //
 
 #ifndef CSVPARSER_CSVINTERFACE_H
