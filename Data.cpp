@@ -1,4 +1,5 @@
-#include<istream>
+#include<vector>
+
 // .H
 
 
@@ -8,11 +9,11 @@ class Data{
      Rappresentazione:
      "12","12","12"    anno mese giorno
      */
-    friend istream& operator>>(istream&, Data&);
+    //friend istream& operator>>(istream&, Data&);
 
 private:
 
-    static std::vector<int> giorni_al_mese;    //gennaio -> 0  , dicembre -> 11
+    static const int giorni_al_mese[12];    //gennaio -> 0  , dicembre -> 11
     static int giorniDelMese(int mese_, int anno_=1);
 
     unsigned int giorno,mese;    // data non esiste (mai) corrisponde ai tre campi = 0
@@ -21,7 +22,7 @@ private:
 public:
 
     static Data oggi();
-    static Data mai();          //corrisponde a nessuna Data possibile
+    static Data mai();          //corrisponde a nessuna Data possibile     
     //static Data forever();      
 
     void setGiorno(unsigned int g){giorno=g;}
@@ -31,7 +32,7 @@ public:
     int getMese(){return mese;}
     int getAnno(){return anno;}
 
-    explicit Data(int a=0, unsigned int m=1, unsigned int g=1);
+    explicit Data(int a, unsigned int m, unsigned int g);
     Data(int num_giorni=0);     //dalla data base (0,1,1)
 
     operator int();                          // differenza giorni dalla base (0,1,1)
@@ -51,37 +52,21 @@ public:
 
 
 
+const int Data::giorni_al_mese[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
+
 
 
 //   .CPP
-
-
-
-
-
-Data::giorni_al_mese.push_back(31);
-Data::giorni_al_mese.push_back(28);
-Data::giorni_al_mese.push_back(31);
-Data::giorni_al_mese.push_back(30);
-Data::giorni_al_mese.push_back(31);
-Data::giorni_al_mese.push_back(30);
-Data::giorni_al_mese.push_back(31);
-Data::giorni_al_mese.push_back(31);
-Data::giorni_al_mese.push_back(30);
-Data::giorni_al_mese.push_back(31);
-Data::giorni_al_mese.push_back(30);
-Data::giorni_al_mese.push_back(31);
-
 
 
 int Data::giorniDelMese(int mese_, int anno_){
     return ( ((mese_==1)&&(anno_%4==0)) ? 29 : Data::giorni_al_mese[mese_-1]);
 }
 
-Data::Data Data::oggi(){
+Data Data::oggi(){
     return Data(/*funzione di sistema?*/6,4,2020);
 }
-Data::Data Data::mai(){
+Data Data::mai(){
     return Data(0,0,0);     // data inesistente
 }
 
@@ -90,7 +75,7 @@ Data::Data(int a, unsigned int m, unsigned int g):anno(a),mese(m),giorno(g){
         if(mese<1||giorno<1||mese>12||giorno>giorniDelMese(mese,anno))
               a = m = g = 0;
     }
-Data::Data(int num_giorni=0){
+Data::Data(int num_giorni){
     int a,m;
     a=num_giorni/(1461);   //366+365*3
     num_giorni=num_giorni%1461;
@@ -208,7 +193,7 @@ Data::operator int(){
 }
 
 
-
+/*
 
 class errore_sintassi;
 class fine_file;
@@ -255,3 +240,6 @@ if(!(in>>d.giorno))
 if(!in>>c) throw fine_file;
 if(c!='"') throw errore_sintassi;
 }
+
+
+*/
