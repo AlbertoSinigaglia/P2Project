@@ -18,14 +18,8 @@ public:
     };
     bool efficiente() const override;
     unsigned int calcolaStipendio() const override;
-    unsigned int getAnniEsperienza() const;
-    void incrementaAnniEsperienza(unsigned int incremento);
-    unsigned int getNumeroCrashRisolti() const;
-    void incrementaCrashRisolti(unsigned int incremento);
-    Certificato getCertificato() const;
-    void setCertificato(Certificato certificato);
-
-
+protected:
+    virtual unsigned int bonusStipendio() const;
 private:
     const unsigned int N_CRASH_ANNUALI_AVG = 10;
     unsigned int anni_esperienza;

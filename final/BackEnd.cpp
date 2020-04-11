@@ -1,8 +1,9 @@
 //
-// Created by Alberto Sinigaglia on 05/04/2020.
+// Created by Alberto Sinigaglia on 10/04/2020.
 //
 
-#include "Backend.h"
+#include "BackEnd.h"
+
 
 unsigned int BackEnd::calcolaStipendio() const {
     auto bonus_righe_codice = 0.0f;
@@ -42,22 +43,6 @@ unsigned int BackEnd::calcolaStipendio() const {
             static_cast<unsigned int>(Software::calcolaStipendio())+
             bonus_db +
             bonus_libreria;
-}
-
-BackEnd::Linguaggio BackEnd::getLinguaggio() const {
-    return linguaggio;
-}
-
-void BackEnd::setLinguaggio(BackEnd::Linguaggio linguaggio_) {
-    BackEnd::linguaggio = linguaggio_;
-}
-
-bool BackEnd::isDatabase() const {
-    return database;
-}
-
-void BackEnd::setDatabase(bool database_) {
-    BackEnd::database = database_;
 }
 
 double BackEnd::valoreLavoro() const {

@@ -9,16 +9,16 @@
 #include "Backend.h"
 
 class Tester: virtual public BackEnd{
+public:
+    // trovare qualcosa che differenzi Tester da BackEnd
+    unsigned int calcolaStipendio() const override;
+    bool efficiente() const override; // virtual
+protected:
+    virtual unsigned int bonusStipendio() const;
+    double valoreLavoro() const override;
 private:
     unsigned int num_test_sviluppati;
     unsigned int num_bugs;
-public:
-    unsigned int calcolaStipendio() const override;
-    unsigned int getNumTestSviluppati() const;
-    void setNumTestSviluppati(unsigned int numTestSviluppati);
-    unsigned int getNumBugs() const;
-    void setNumBugs(unsigned int numBugs);
-    double valoreLavoro() const override;
 };
 
 #endif //CSVPARSER_TESTER_H

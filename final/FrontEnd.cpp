@@ -1,8 +1,8 @@
 //
-// Created by Alberto Sinigaglia on 05/04/2020.
+// Created by Alberto Sinigaglia on 10/04/2020.
 //
 
-#include "Frontend.h"
+#include "FrontEnd.h"
 
 unsigned int FrontEnd::calcolaStipendio() const {
     auto bonus_righe_codice = 0.0f;
@@ -38,23 +38,6 @@ unsigned int FrontEnd::calcolaStipendio() const {
            Software::calcolaStipendio() +
            static_cast<unsigned int>(bonus_pagine);
 }
-
-FrontEnd::Libreria FrontEnd::getLibreriaUtilizzata() const {
-    return libreria;
-}
-
-void FrontEnd::setLibreriaUtilizzata(FrontEnd::Libreria libreria_) {
-    FrontEnd::libreria = libreria_;
-}
-
-unsigned int FrontEnd::getNumPagine() const {
-    return num_pagine;
-}
-
-void FrontEnd::setNumPagine(unsigned int numPagine) {
-    num_pagine = numPagine;
-}
-
 double FrontEnd::valoreLavoro() const {
     auto valore_righe_codice = 0.0f;
     switch(libreria){

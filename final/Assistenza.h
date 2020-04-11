@@ -1,19 +1,16 @@
 //
-// Created by Alberto Sinigaglia on 05/04/2020.
+// Created by Alberto Sinigaglia on 10/04/2020.
 //
 
-#ifndef CSVPARSER_SENIOR_H
-#define CSVPARSER_SENIOR_H
+#ifndef CSVPARSER_ASSISTENZA_H
+#define CSVPARSER_ASSISTENZA_H
 
 
-#include "Fullstack.h"
-#include "Tester.h"
+#include "Client.h"
+#include "Server.h"
 #include "Hardware.h"
 
-/**
- * TODO: Definire se virtual o meno in quanto se espandibile è necessario, sennò no
- * */
-class Senior: virtual public FullStack, virtual public Tester, virtual public Hardware{
+class Assistenza: virtual public Client, virtual public Server, virtual public Hardware{
 public:
     enum Segmento{
         FULLSTACK,
@@ -25,10 +22,10 @@ public:
     Segmento getSegmentoPrincipale() const;
     void setSegmentoPrincipale(Segmento segmentoPrincipale);
     double valoreLavoro() const override;
-
+    bool efficiente() const;
 private:
     Segmento segmento_principale;
 };
 
 
-#endif //CSVPARSER_SENIOR_H
+#endif //CSVPARSER_ASSISTENZA_H
