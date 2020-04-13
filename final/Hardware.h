@@ -21,9 +21,7 @@ public:
 protected:
     virtual unsigned int bonusStipendio() const;
 private:
-    const unsigned int N_CRASH_ANNUALI_AVG = 10;
     unsigned int anni_esperienza;
-    unsigned int num_crash;
     Certificato certificato;
 };
 

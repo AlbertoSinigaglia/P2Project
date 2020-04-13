@@ -9,6 +9,9 @@
 #include "Hardware.h"
 
 class Tecnico : public Hardware{
+private:
+    const unsigned int N_CRASH_ANNUALI_AVG = 10;
+    unsigned int num_crash;
 
 };
 

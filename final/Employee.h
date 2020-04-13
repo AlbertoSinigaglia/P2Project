@@ -38,8 +38,7 @@ public:
     //bool isAssunto();
     virtual bool efficiente() const= 0;
     virtual unsigned int calcolaStipendio() const;
-
-
+    date getFineContratto();
 private:
     Laurea laurea;
     bool magistrale;
@@ -55,5 +54,13 @@ private:
     Contratto contratto;
 };
 
+struct Persona{
+    std::string nome, cognome, CF;
+    date nascita;
+};
+struct PianoStudi{
+    std::string laurea;
+    bool magistrale;
+};
 
 #endif //CSVPARSER_EMPLOYEE_H
