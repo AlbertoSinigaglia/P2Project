@@ -67,7 +67,7 @@ public:
     /*
      * Cast
      */
-    explicit operator int() const;                          // differenza giorni dalla base (0,1,1)
+    explicit operator int() const; // differenza giorni dalla base (0,1,1)
 
 
     /*

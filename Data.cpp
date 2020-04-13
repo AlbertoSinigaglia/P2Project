@@ -13,7 +13,7 @@ int Data::giorniDelMese(unsigned int mese_, int anno_) {
 Data Data::oggi() {
     time_t now = time(nullptr);
     tm *lt = localtime(&now);
-    return Data(lt->tm_mday, lt->tm_mon, lt->tm_year);
+    return Data(lt->tm_year, lt->tm_mon, lt->tm_mday);
 }
 
 Data::Data(int a, unsigned int m, unsigned int g) : anno(a), mese(m), giorno(g) {
@@ -32,12 +32,11 @@ Data::Data(int a, unsigned int m, unsigned int g) : anno(a), mese(m), giorno(g) 
 
 Data::Data(int num_giorni) {
     int a, m;
-    a = num_giorni / (1461);   //366+365*3
+    a = num_giorni / (1461) * 4;   //366+365*3
     num_giorni = num_giorni % 1461;
     if (num_giorni > 366) {
         num_giorni -= 366;
-        a++;
-        a += num_giorni / 365;
+        a += num_giorni / 365 + 1;
         num_giorni = num_giorni % 365;
     }
     m = 1;
