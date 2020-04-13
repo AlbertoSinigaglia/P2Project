@@ -61,7 +61,7 @@ public:
     bool operator==(const Data &d1) const;
     bool operator<(const Data &) const;        //assunzione: qualsiasi data è maggiore di una data che non esiste
     bool operator>(const Data &) const;
-    Data operator-(const Data &d) const;   // restituisce un valore Data approssimato di quella che è la distanza temporale assoluta tra le due date
+    int operator-(const Data &d) const;   // restituisce un valore Data approssimato di quella che è la distanza temporale assoluta tra le due date
 
 
     /*

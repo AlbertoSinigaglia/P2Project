@@ -7,7 +7,7 @@
 const int Data::giorni_al_mese[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 int Data::giorniDelMese(unsigned int mese_, int anno_) {
-    return (((mese_ == 1) && (anno_ % 4 == 0)) ? 29 : Data::giorni_al_mese[mese_ - 1]);
+    return (((mese_ == 1) && (anno_ % 4 == 0)) ? 29 : Data::giorni_al_mese[mese_]);
 }
 
 Data Data::oggi() {
@@ -16,18 +16,11 @@ Data Data::oggi() {
     return Data(lt->tm_year, lt->tm_mon, lt->tm_mday);
 }
 
-Data::Data(int a, unsigned int m, unsigned int g) : anno(a), mese(m), giorno(g) {
-
-    if (mese < 1  || mese > 12 )
+Data::Data(int a, unsigned int m, unsigned int g) : anno(a), mese(m-1), giorno(g) {
+    if ( mese > 11 )
         throw std::invalid_argument("Mese non valido");
     else if(giorno > giorniDelMese(mese, anno) || giorno < 1)
         throw std::invalid_argument("Giorno non valido");
-    /*
-    if (mese < 1 || giorno < 1 || mese > 12 || giorno > giorniDelMese(mese, anno)){
-        anno = 0;
-        giorno = mese = 1;
-    }
-     */
 }
 
 Data::Data(int num_giorni) {
@@ -40,30 +33,24 @@ Data::Data(int num_giorni) {
         num_giorni = num_giorni % 365;
     }
     m = 1;
-    while (num_giorni > giorniDelMese(m, a)) {
-        num_giorni -= giorniDelMese(m, a);
-        m++;
-    }
+    while (num_giorni > giorniDelMese(m -1 , a))
+        num_giorni -= giorniDelMese(m++ - 1 , a);
     anno = a;
-    mese = m;
+    mese = m-1;
     giorno = num_giorni;
 }
 
 bool Data::operator==(const Data &d) const {
-    if ((this == &d) || (giorno == 0 && d.giorno == 0)) return true;
-    if (giorno == 0 || d.giorno == 0) return false;
-    return anno == d.anno && mese == d.mese && giorno == d.giorno;
+    return (this == &d) || (anno == d.anno && mese == d.mese && giorno == d.giorno);
 }
 
 bool Data::operator<(const Data &d) const {
     if (operator==(d)) return false;    // serve per la condizione dell'esistenza
-    if (giorno == 0) return true;
-    if (d.giorno == 0) return false;
     if (anno > d.anno) return false;
     if (anno < d.anno) return true;
     if (mese > d.mese) return false;
     if (mese < d.mese) return true;
-    return giorno <= d.giorno;
+    return giorno < d.giorno;
 }
 
 bool Data::operator>(const Data &d) const {
@@ -72,30 +59,7 @@ bool Data::operator>(const Data &d) const {
 
 int Data::differenzaGiorni(const Data &d) const {
     return static_cast<int>(*this) - static_cast<int>(d);
-    /*
-    const Data *max, *min;
-    if (operator>(d)) {
-        max = this;
-        min = &d;
-    }
-    else {
-        max = &d;
-        min = this;
-    }
-    int count_giorni = 0;
-
-    count_giorni = max->giorno + giorniDelMese(min->mese, min->anno) - min->giorno;
-    for (int i = 1; i < max->mese; i++) count_giorni += giorniDelMese(i, max->anno);
-    for (int i = min->mese + 1; i < 13; i++) count_giorni += giorniDelMese(i, min->anno);
-
-    count_giorni += 365 * (max->anno - min->anno - 1) + (max->anno - min->anno + min->anno % 4) / 4 +
-                    ((min->anno % 4 == 0) ? 1 : 0);
-
-    if (max == this) return count_giorni;
-    else return -count_giorni;
-     */
 }
-
 int Data::differenzaMesi(const Data &d) const {
     int count_mesi = 0;
     const Data *max, *min;
@@ -108,38 +72,25 @@ int Data::differenzaMesi(const Data &d) const {
         min = this;
     }
 
-    count_mesi += static_cast<int>(max->mese) + 12 - static_cast<int>(min->mese);
-    count_mesi += 12 * (max->anno - min->anno - 1);
+    count_mesi += static_cast<int>(max->mese) - static_cast<int>(min->mese);
+    count_mesi += 12 * (max->anno - min->anno);
 
     return count_mesi * (max == this ? 1 : -1);
 }
-
 int Data::differenzaAnni(const Data &d) const {
     return anno - d.anno;
 }
-
-Data Data::operator-(const Data &d) const {
-    int g, m, a;
-    int x;
-    const Data *max, *min;
-    if (operator>(d)) {
-        max = this;
-        min = &d;
-    }
-    else {
-        max = &d;
-        min = this;
-    }
-
-    x = max->differenzaGiorni(*min);
-    a = x / 365;
-    m = (x % 365) / 30;
-    g = x % 30;
-    return Data(a, m, g);
+int Data::operator-(const Data &d) const {
+    return differenzaGiorni(d);
 }
 
 Data::operator int() const {
-    return differenzaGiorni(Data(0, 1, 1));
+    int g = static_cast<int>(giorno);
+    int a = anno * 365 + (anno / 4 + 1);
+    int m = 0;
+    for(unsigned int i = 0 ; i < mese ; i++ )
+        m += giorniDelMese(i,m);
+    return a + m + g;
 }
 
 void Data::addRemoveGiorni(int g) {
@@ -149,41 +100,17 @@ void Data::addRemoveGiorni(int g) {
     giorno = data.giorno;
     mese = data.mese;
     anno = data.anno;
-
-    /*
-    if (giorno != 0)
-        while (g != 0) {
-            if (g < 0) {
-                if (giorno > -g) {
-                    giorno += g;
-                    g = 0;
-                } else {
-                    g += giorno;
-                    if (mese == 1) {
-                        mese = 12;
-                        anno--;
-                    }
-                    giorno = giorniDelMese(mese, anno);
-                }
-            } else if (giorniDelMese(mese, anno) - giorno >= g) {
-                giorno += g;
-                g = 0;
-            } else {
-                g -= giorniDelMese(mese, anno) - giorno + 1;
-                giorno = 1;
-                if (mese == 12) {
-                    mese = 1;
-                    anno++;
-                }
-                else mese++;
-            }
-        }*/
 }
 
 void Data::addRemoveMesi(int m) {
     int a_ = m / 12;
     int m_ = m % 12;
-    mese += m_;
+    if(m_ < 0 && -m > mese){
+        mese = 12 - (-m - mese);
+        a_ -= 1;
+    }
+    else
+        mese += m_;
     anno += a_;
 }
 
@@ -199,8 +126,8 @@ void Data::setGiorno(unsigned int g) {
 }
 
 void Data::setMese(unsigned int m) {
-    if( m > 0 && m <= 12)
-        mese = m;
+    if( m > 0 && m <= 12 && giorno <= giorniDelMese(m - 1 , anno))
+        mese = m - 1;
     else
         throw std::invalid_argument("Mese non valido");
 }
@@ -214,7 +141,7 @@ unsigned int Data::getGiorno() const {
 }
 
 unsigned int Data::getMese() const {
-    return mese;
+    return mese + 1;
 }
 
 int Data::getAnno() const {
@@ -225,8 +152,8 @@ std::istream &operator>>(std::istream & input, Data &data) {
     unsigned int d, m;
     int y;
     std::string s;
-
     input >> s;
+
     auto pos_f = s.find('/');
     if(pos_f == std::string::npos)
         throw std::invalid_argument("L'input fornito non è nel formato GG/MM/(-)YYYY");
@@ -242,64 +169,13 @@ std::istream &operator>>(std::istream & input, Data &data) {
     std::istringstream (s) >> y;
 
     try {
-        data = Data(y, m, d);
-    } catch (const std::invalid_argument&){
-        throw std::invalid_argument("L'input fornito non è nel formato GG/MM/(-)YYYY");
+        data = Data(y, m-1, d);
+    } catch (const std::invalid_argument& e ){
+        throw std::invalid_argument("L'input fornito non è valido");
     }
     return input;
 }
 
 std::ostream &operator<<(std::ostream &os, const Data &data) {
-    return os << data.giorno << "/" << data.mese << "/" << data.anno;
+    return os << data.giorno << "/" << data.mese+1 << "/" << data.anno;
 }
-
-/*
-
-class errore_sintassi;
-class fine_file;
-
-
-istream& operator>>(istream& in, Data& d){
-
-char c;
-if(!in>>c) throw fine_file;
-if(c!='"') throw errore_sintassi;
-
-if(!(in>>d.anno))
-    if(in.eof())
-        throw fine_file; 
-        else 
-        throw errore_sintassi;
-
-if(!in>>c) throw fine_file;
-if(c!='"') throw errore_sintassi;
-if(!in>>c) throw fine_file;
-if(c!=',') throw errore_sintassi;
-if(!in>>c) throw fine_file;
-if(c!='"') throw errore_sintassi;
-
-if(!(in>>d.mese))
-    if(in.eof())
-        throw fine_file; 
-        else 
-        throw errore_sintassi;
-
-if(!in>>c) throw fine_file;
-if(c!='"') throw errore_sintassi;
-if(!in>>c) throw fine_file;
-if(c!=',') throw errore_sintassi;
-if(!in>>c) throw fine_file;
-if(c!='"') throw errore_sintassi;
-
-if(!(in>>d.giorno))
-    if(in.eof())
-        throw fine_file; 
-        else 
-        throw errore_sintassi;
-
-if(!in>>c) throw fine_file;
-if(c!='"') throw errore_sintassi;
-}
-
-
-*/
