@@ -6,7 +6,7 @@
 #define CSVPARSER_DYNAMICARRAY_H
 
 #include <type_traits>
-template<class T>
+template <class T>
 class DynamicArray{
     friend class iterator;
 public:
@@ -30,6 +30,9 @@ public:
         const DynamicArray* arr;
         int pos;
     public:
+        int operator-(const const_iterator& iter){
+            return pos - iter.pos;
+        }
         bool operator==(const const_iterator &it) const {
             return &arr == &(it.arr) && pos == it.pos;
         }
@@ -65,6 +68,9 @@ public:
         DynamicArray* arr;
         int pos;
     public:
+        int operator-(const iterator& iter){
+            return pos - iter.pos;
+        }
         bool operator==(const iterator &it) const {
             return &arr == &(it.arr) && pos == it.pos;
         }
@@ -116,11 +122,11 @@ public:
         capacity_(0){};
 
     DynamicArray(const DynamicArray& ar):
-        p(new T[ar.capacity_]),
-        size_(ar.size_),
-        capacity_(ar.capacity_){
-            for(unsigned int i = 0; i < size_; ++i)
-                p[i] = ar.p[i];
+            p(std::make_unique<T[]>(ar.capacity_)),
+            size_(ar.size_),
+            capacity_(ar.capacity_){
+        for(unsigned int i = 0; i < size_; ++i)
+            p[i] = ar.p[i];
     };
     DynamicArray&operator=(const DynamicArray& ar){
         if(this != &ar){
@@ -135,7 +141,7 @@ public:
     DynamicArray&operator=(std::initializer_list<T> l){
         size_ = l.size();
         capacity_ = l.size();
-        p = std::make_unique<T[]>(capacity_);
+        p = std::make_unique<T[]>(l.size());
         unsigned int i = 0;
         for(auto& el : l)
             p[i++] = el;
@@ -164,12 +170,12 @@ public:
             p[i++] = el;
     }
     T& at(unsigned int pos){
-        if(pos > size_)
+        if(pos >= size_)
             throw std::out_of_range("L'elemento richiesto è al di fuori della dimensione del contenitore");
         return p[pos];
     }
     [[nodiscard]] const T& at(unsigned int pos) const {
-        if(pos > size_)
+        if(pos >= size_)
             throw std::out_of_range("L'elemento richiesto è al di fuori della dimensione del contenitore");
         return p[pos];
     }
@@ -186,7 +192,7 @@ public:
         return p[size_-1];
     }
     [[nodiscard]] bool empty() const{
-        return size() == 0;
+        return size_ == 0;
     }
     [[nodiscard]] unsigned int size() const{
         return size_;
@@ -198,15 +204,13 @@ public:
         if(new_cap > capacity_) {
             auto new_p = std::make_unique<T[]>(new_cap);
             for(int i = 0; i < capacity_ ;++i)
-                new_p[i] = p[i];
+                new_p[i] = std::move(p[i]);
             p = std::move(new_p);
             capacity_ = new_cap;
         }
     };
     void clear(){
-        p = std::make_unique<T[]>(0);
         size_ = 0;
-        capacity_ = 0;
     }
     void push_back( const T& value ){
         prepare(1);
@@ -215,7 +219,7 @@ public:
     }
     void push_back( T&& value ){
         prepare(1);
-        p[size_] = value;
+        p[size_] = std::move(value);
         ++size_;
     };
     /*
@@ -230,27 +234,27 @@ public:
         it.pos+=pos.pos;
         return it;
     }*/
-    iterator insert( const_iterator pos, const T& value ){
+    iterator insert(const const_iterator& pos, const T& value ){
         prepare(1);
-        for(unsigned int i = size_; i >= pos.pos; --i)
+        for(unsigned int i = size_-1; i >= pos.pos; --i)
             p[i+1]=p[i];
         p[pos.pos] = value;
         ++size_;
         return iterator(this, pos.pos);
     }
-    iterator insert( const_iterator pos, unsigned int count, const T& value ){
+    iterator insert(const const_iterator& pos, unsigned int count, const T& value ){
         if(count > 0){
             prepare(count);
             for(unsigned int i = size_; i >= pos.pos; --i)
                 p[i+count]=p[i];
-            for(unsigned int i = pos.pos; i < pos.pos + count; --i)
+            for(unsigned int i = pos.pos; i < pos.pos + count; ++i)
                 p[i] = value;
             size_+=count;
         }
         return iterator(this, pos.pos);
     }
     template< class InputIt >
-    iterator insert( const_iterator pos, InputIt first, InputIt last ){
+    iterator insert(const const_iterator& pos,const InputIt& first, const InputIt& last ){
         int dist = std::distance(first, last);
         if(dist > 0){
             auto iter = first;
@@ -261,15 +265,15 @@ public:
         return iterator(this, pos.pos);
     }
     template< class... Args >
-    iterator emplace( const_iterator pos, Args&&... args ){
+    iterator emplace(const const_iterator& pos, Args&&... args ){
         prepare(1);
-        for(unsigned int i = size_; i >= pos.pos; --i)
+        for(unsigned int i = size_-1; i >= pos.pos; --i)
             p[i+1]=p[i];
         p[pos.pos] = T(std::forward<Args>(args)...);
         ++size_;
         return iterator(this, pos.pos);
     }
-    iterator erase( const_iterator pos ){
+    iterator erase(const const_iterator& pos ){
         if(pos != end()) {
             for (unsigned int i = size_; i > pos.pos; --i) {
                 p[i - 1] = p[i];
@@ -282,7 +286,7 @@ public:
     /*
      * TODO: da migliorare -> fare shift a sinistra di distance(first, last) degli elementi rimanenti
      */
-    void erase( const_iterator first, const_iterator last ){
+    void erase(const const_iterator& first, const const_iterator& last ){
         iterator l_(this, last.pos);
         iterator f_(this, first.pos);
         while(l_ != f_)
