@@ -173,12 +173,6 @@ public:
             throw std::out_of_range("L'elemento richiesto è al di fuori della dimensione del contenitore");
         return p[pos];
     }
-    T& operator[](unsigned int pos){
-        return p[pos];
-    }
-    const T& operator[](unsigned int pos) const{
-        return p[pos];
-    }
     T& front(){
         return p[0];
     }
@@ -227,15 +221,15 @@ public:
     /*
      * TODO : controllare che il cast da iterator a const_iterator funzioni
      */
-//    iterator insert( iterator pos, const T& value ){
-//        prepare(1);
-//        for(unsigned int i = size_; i >= pos.pos; --i)
-//            p[i+1]=p[i];
-//        p[pos.pos] = value;
-//        iterator it = iterator(this, true);
-//        it.pos+=pos.pos;
-//        return it;
-//    }
+    /*iterator insert( iterator pos, const T& value ){
+        prepare(1);
+        for(unsigned int i = size_; i >= pos.pos; --i)
+            p[i+1]=p[i];
+        p[pos.pos] = value;
+        iterator it = iterator(this, true);
+        it.pos+=pos.pos;
+        return it;
+    }*/
     iterator insert( const_iterator pos, const T& value ){
         prepare(1);
         for(unsigned int i = size_; i >= pos.pos; --i)
@@ -328,6 +322,40 @@ public:
     }
     const_iterator cend()const {
         return const_iterator(this, size_);
+    }
+
+
+    T& operator[](unsigned int pos){
+        return p[pos];
+    }
+    const T& operator[](unsigned int pos) const{
+        return p[pos];
+    }
+    bool operator==(const DynamicArray& other ) const{
+        if(size_ != other.size_) return false;
+        for(unsigned int i = 0; i < size_ ; ++i)
+            if(p[i] != other.p[i])
+                return false;
+        return true;
+    }
+    bool operator!=(const DynamicArray& other ) const{
+        return ! (*this == other);
+    }
+    bool operator<(const DynamicArray& other){
+        for(unsigned int i = 0; i < size_ ; ++i){
+            if(i >= other.size_) return false;
+            if(p[i] >= other.p[i]) return false;
+        }
+        return true;
+    }
+    bool operator<=(const DynamicArray& other){
+        return *this == other || *this < other;
+    }
+    bool operator>(const DynamicArray& other){
+        return !( *this == other || *this < other );
+    }
+    bool operator>=(const DynamicArray& other){
+        return *this == other || *this > other;
     }
 private:
     void prepare(unsigned int needs){
