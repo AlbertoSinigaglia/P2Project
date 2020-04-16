@@ -79,17 +79,17 @@ int Data::differenzaAnni(const Data &d) const {
     return anno - d.anno;
 }
 DifferenzaDate Data::operator-(const Data &d) const {
-    int diff, giorni, mesi, anni;
+    int diff;
     DifferenzaDate data;
     const Data& max = std::max(*this, d);
     const Data& min = std::min(*this, d);
     diff=static_cast<int>(max) - static_cast<int>(min);
-    anni=diff/365;
+    data.anni=diff/365;
     diff=diff%365;
-    mesi=diff/12;
-    giorni=diff%12;
+    data.mesi=diff/12;
+    data.giorni=diff%12;
     
-    return DifferenzaDate{giorni, mesi, anni};
+    return data;
 }
 
 Data::operator int() const {
