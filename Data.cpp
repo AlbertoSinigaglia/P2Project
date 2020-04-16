@@ -71,17 +71,30 @@ int Data::differenzaMesi(const Data &d) const {
         max = &d;
         min = this;
     }
-
     count_mesi += static_cast<int>(max->mese) - static_cast<int>(min->mese);
     count_mesi += 12 * (max->anno - min->anno);
-
     return count_mesi * (max == this ? 1 : -1);
 }
 int Data::differenzaAnni(const Data &d) const {
     return anno - d.anno;
 }
-int Data::operator-(const Data &d) const {
-    return differenzaGiorni(d);
+DifferenzaDate Data::operator-(const Data &d) const {
+    int giorni, mesi, anni;
+    DifferenzaDate data;
+    const Data& max = std::max(*this, d);
+    const Data& min = std::min(*this, d);
+    if(max.giorno > min.giorno){
+        data.giorni = max.giorno - min.giorno;
+        data.mesi = max.mese - min.mese;
+    } else {
+        data.giorni = 31 - (max.giorno - min.giorno);
+        data.mesi = max.mese - min.mese - 1;
+    }
+    if(*this < d){
+        data.giorni = d.giorno - giorno ;
+
+    }
+    return
 }
 
 Data::operator int() const {
@@ -179,3 +192,4 @@ std::istream &operator>>(std::istream & input, Data &data) {
 std::ostream &operator<<(std::ostream &os, const Data &data) {
     return os << data.giorno << "/" << data.mese+1 << "/" << data.anno;
 }
+

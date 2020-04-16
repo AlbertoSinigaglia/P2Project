@@ -9,10 +9,16 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+struct DifferenzaDate{
+    int giorni;
+    int mesi;
+    int anni;
+};
 class Data {
     friend std::istream &operator>>(std::istream &, Data &);
     friend std::ostream &operator<<(std::ostream &,const Data &);
-
+    friend Data operator+(const Data& d, const DifferenzaDate& diff);
+    friend Data operator+(const DifferenzaDate& diff,const Data& d);
 private:
 
     static const int giorni_al_mese[12];    //gennaio -> 0  , dicembre -> 11
@@ -61,7 +67,8 @@ public:
     bool operator==(const Data &d1) const;
     bool operator<(const Data &) const;        //assunzione: qualsiasi data è maggiore di una data che non esiste
     bool operator>(const Data &) const;
-    int operator-(const Data &d) const;   // restituisce un valore Data approssimato di quella che è la distanza temporale assoluta tra le due date
+    DifferenzaDate operator-(const Data &d) const;
+    Data& operator+=(const DifferenzaDate& diff);
 
 
     /*
