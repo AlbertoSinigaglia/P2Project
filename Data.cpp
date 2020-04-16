@@ -86,9 +86,8 @@ DifferenzaDate Data::operator-(const Data &d) const {
     diff=static_cast<int>(max) - static_cast<int>(min);
     data.anni=diff/365;
     diff=diff%365;
-    data.mesi=diff/12;
-    data.giorni=diff%12;
-    
+    data.mesi=diff/31;
+    data.giorni=diff%31;
     return data;
 }
 
