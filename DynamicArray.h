@@ -8,14 +8,14 @@
 /*
  * TODO : correttezza del const e segnalare che gli iteratori devono essere validi e dereferenziabili dove necessario (come su insert)
  */
-template <class T>
+template<class T>
 class DynamicArray{
 public:
     /**
      * Const Iteratore:
      * Iteratore su contenitore di tipo DynamicArray costante
      */
-    class const_iterator {
+    class const_iterator  {
         friend DynamicArray;
         /**
          * Operator + : ritorna un iteratore che dista diff posizioni da iter(non fa nessun controllo sui bound)
@@ -59,7 +59,10 @@ public:
          * @param container : riferimento al contenitore a cui si riferisce
          * @param position : posizione corrente dell'iteratore dentro al contenitore
          */
-        const_iterator(const DynamicArray* container, unsigned int position) : arr(container), pos(static_cast<int>(position)) {}
+        const_iterator(const DynamicArray* container, unsigned int position) :
+            arr(container),
+            pos(static_cast<int>(position))
+            {}
         const DynamicArray* arr;
         int pos;
     public:
@@ -79,7 +82,7 @@ public:
          *          false altrimenti
          */
         bool operator==(const const_iterator &it) const {
-            return &arr == &(it.arr) && pos == it.pos;
+            return arr == it.arr && pos == it.pos;
         }
         /**
          * Operator != : controlla se i due iteratori puntano a elementi diversi
@@ -104,7 +107,7 @@ public:
          * Operator ++ (pre-incrementato) : avanza il puntatore di una posizione e ritorna un riferimento ad esso
          * @return il puntatore di invocazione avanzato di una posizione
          */
-        const_iterator &operator++() {
+        const_iterator& operator++() {
             ++pos;
             return *this;
         }
@@ -230,7 +233,7 @@ public:
          *          false altrimenti
          */
         bool operator==(const iterator &it) const {
-            return &arr == &(it.arr) && pos == it.pos;
+            return arr == it.arr && pos == it.pos;
         }
         /**
          * Operator != : controlla se i due iteratori puntano a elementi diversi
@@ -308,7 +311,7 @@ public:
             return *this;
         }
         /**
-         * Opeerator -= : fa indietreggiare (se diff>0 , altrimenti avanzare) l'iteratore di diff posizioni
+         * Operator -= : fa indietreggiare (se diff>0 , altrimenti avanzare) l'iteratore di diff posizioni
          * @param diff : posizioni da far avanzare l'iteratore
          * @return riferimento al puntatore indietreggaito (se diff>0 , altrimenti avanzare) di diff posizioni
          */
@@ -348,10 +351,11 @@ public:
      * @param ar : elemento da copiare in this
      * @return riferimento a this
      */
-    DynamicArray&operator=(const DynamicArray& ar){
+    DynamicArray& operator=(const DynamicArray& ar){
         if(this != &ar){
             size_ = ar.size_;
             capacity_ = ar.capacity_;
+            std::unique_ptr<T> ptr(new T);
             p = std::make_unique<T[]>(capacity_);
             for(unsigned int i = 0; i < size_; ++i)
                 p[i] = ar.p[i];
@@ -383,9 +387,9 @@ public:
      * @param l : lista di inizializzazione
      * @return riferimento a this
      */
-    DynamicArray&operator=(DynamicArray&& l) noexcept {
-        size_ = l.size();
-        capacity_ = l.size();
+    DynamicArray& operator=(DynamicArray&& l) noexcept {
+        size_ = l.size_;
+        capacity_ = l.capacity_;
         p = std::move(l.p);
         return *this;
     };
@@ -407,14 +411,36 @@ public:
      * Costruttore : copia gli elementi [first , last) in this
      * @tparam InputIt : Iteratore che sia compatibile con InputIterator (check : http://www.cplusplus.com/reference/iterator/InputIterator/)
      * @param first: posizione primo elemento
-     * @param last: posizione a cui fermaris
+     * @param last: posizione a cui fermarsi
      */
     template<class InputIt>
     DynamicArray(const InputIt& first, const InputIt& last ){
         auto dist = std::distance(first, last);
         size_ = capacity_ = dist;
-        p = std::make_shared<T[]>(dist);
-        auto it = first;
+        p = std::make_unique<T[]>(dist);
+        InputIt it = first;
+        for(unsigned int i = 0; i < size_; ++i) {
+            p[i] = *it;
+            ++it;
+        }
+    }
+    template<>
+    DynamicArray(const iterator& first, const iterator& last ){
+        auto dist = last - first;
+        size_ = capacity_ = dist;
+        p = std::make_unique<T[]>(dist);
+        iterator it = first;
+        for(unsigned int i = 0; i < size_; ++i) {
+            p[i] = *it;
+            ++it;
+        }
+    }
+    template<>
+    DynamicArray(const const_iterator& first, const const_iterator& last ){
+        auto dist = last - first;
+        size_ = capacity_ = dist;
+        p = std::make_unique<T[]>(dist);
+        const_iterator it = first;
         for(unsigned int i = 0; i < size_; ++i) {
             p[i] = *it;
             ++it;
@@ -551,12 +577,27 @@ public:
      */
     iterator insert(const const_iterator& pos, const T& value ){
         prepare(1);
-        for(unsigned int i = size_-1; i >= pos.pos; --i)
-            p[i+1]=p[i];
+        for( int i = size_-1; i >= pos.pos; --i)
+            p[i+1]= std::move(p[i]);
         p[pos.pos] = value;
         ++size_;
         return iterator(this, pos.pos);
     }
+    /**
+     * Inserisce in posizione pos value (per rvalue reference)
+     * @param pos : iteratore valido che rappresenta la posizione desiderata
+     * @param value : valore da inserire
+     * @return iteratore all'elemento inserito
+     */
+    iterator insert(const const_iterator& pos, T&& value ){
+        prepare(1);
+        for(int i = size_-1; i >= pos.pos; --i)
+            p[i+1]= std::move(p[i]);
+        p[pos.pos] = std::move(value);
+        ++size_;
+        return iterator(this, pos.pos);
+    }
+
     /**
      * Inserisce dalla posizione pos count copie di value
      * @param pos : iteratore valido rappresentante la posizione a cui iniziare a inserire
@@ -567,9 +608,9 @@ public:
     iterator insert(const const_iterator& pos, unsigned int count, const T& value ){
         if(count > 0){
             prepare(count);
-            for(unsigned int i = size_; i >= pos.pos; --i)
-                p[i+count]=p[i];
-            for(unsigned int i = pos.pos; i < pos.pos + count; ++i)
+            for(int i = size_-1; i >= pos.pos; --i)
+                p[i+count]= std::move(p[i]);
+            for(int i = pos.pos; i < pos.pos + count; ++i)
                 p[i] = value;
             size_+=count;
         }
@@ -584,13 +625,29 @@ public:
      * @return itertore al primo elemento inserito
      */
     template< class InputIt >
-    iterator insert(const const_iterator& pos,const InputIt& first, const InputIt& last ){
+    iterator insert(const const_iterator& pos, const InputIt& first, const InputIt& last ){
         int dist = std::distance(first, last);
         if(dist > 0){
-            auto iter = first;
-            for(int i = pos.pos ; i < pos.pos+dist ; i++)
-                insert(pos + i , first + i);
-            size_+=dist;
+            for(int i = 0 ; i < dist ; ++i)
+                insert( pos + i , *(first + i));
+        }
+        return iterator(this, pos.pos);
+    }
+    template<>
+    iterator insert(const const_iterator& pos, const iterator& first, const iterator& last ){
+        int dist = last-first;
+        if(dist > 0){
+            for(int i = 0 ; i < dist ; ++i)
+                insert( pos + i , *(first + i));
+        }
+        return iterator(this, pos.pos);
+    }
+    template<>
+    iterator insert(const const_iterator& pos, const const_iterator& first, const const_iterator& last ){
+        int dist = last-first;
+        if(dist > 0){
+            for(int i = 0 ; i < dist ; ++i)
+                insert( pos + i , *(first + i));
         }
         return iterator(this, pos.pos);
     }
@@ -603,13 +660,14 @@ public:
      */
     template< class... Args >
     iterator emplace(const const_iterator& pos, Args&&... args ){
+        prepare(1);
         if(pos == end()) {
-            emplace_back(args...);
-            return back();
+            p[size_] = T(std::forward<Args>(args)...);
+            ++size_;
+            return end()-1;
         }
         else {
-            prepare(1);
-            for (unsigned int i = size_ - 1; i >= pos.pos; --i)
+            for (int i = size_ - 1; i >= pos.pos; --i)
                 p[i + 1] = p[i];
             p[pos.pos] = T(std::forward<Args>(args)...);
             ++size_;
@@ -618,22 +676,19 @@ public:
     }
     /**
      * Rimuove l'elemento in posizione pos
-     * @param pos : iteratore valido rappresentante la posizione elemento da rimuovere
+     * @param pos : iteratore valido e dereferenziabile rappresentante la posizione elemento da rimuovere
      * @return iteratore all'elemento successivo all'elemento rimosso
      */
     iterator erase(const const_iterator& pos ){
-        if(pos != end()) {
-            for (unsigned int i = size_; i > pos.pos; --i) {
-                p[i - 1] = p[i];
+        if(pos != end() && !empty()) {
+            for (int i = pos.pos; i < size_; ++i) {
+                p[i] = std::move(p[i+1]);
             }
             --size_;
             return iterator(this, pos.pos);
         }
         return end();
     }
-    /*
-     * TODO: da migliorare -> fare shift a sinistra di distance(first, last) degli elementi rimanenti
-     */
     /**
      * Rimuove tutti gli elementi nell'intervallo [first,last)
      * @param first : iteratore valido rappresentante la posizione del primo elemento da rimuovere
@@ -645,7 +700,7 @@ public:
             iterator l_(this, last.pos);
             iterator f_(this, first.pos);
             while (f_ != l_)
-                erase(f_++);
+                erase(--l_);
         }
     }
     /**
@@ -672,7 +727,7 @@ public:
      */
     template< class... Args >
     T& emplace_back( Args&&... args ){
-        emplace(end(), args ...);
+        emplace(end(), std::forward<T>(args) ...);
         return p[size_-1];
     }
 
@@ -688,14 +743,14 @@ public:
      * restituisce un iteratore che rappresenta l'inizio del contenitore
      * @return const iteratore che rappresenta l'inizio del contenitore
      */
-    const_iterator begin()const {
+    const_iterator begin() const {
         return const_iterator(this, 0);
     }
     /**
      * restituisce un iteratore che rappresenta l'inizio del contenitore
      * @return const iteratore che rappresenta l'inizio del contenitore
      */
-    const_iterator cbegin()const {
+    const_iterator cbegin() const {
         return const_iterator(this, 0);
     }
     /**
@@ -709,14 +764,14 @@ public:
      * restituisce un iteratore che rappresenta la fine del contenitore
      * @return const iteratore che rappresenta la fine del contenitore
      */
-    const_iterator end()const {
+    const_iterator end() const {
         return const_iterator(this, size_);
     }
     /**
      * restituisce un iteratore che rappresenta la fine del contenitore
      * @return const iteratore che rappresenta la fine del contenitore
      */
-    const_iterator cend()const {
+    const_iterator cend() const {
         return const_iterator(this, size_);
     }
 
@@ -749,7 +804,7 @@ public:
      */
     bool operator==(const DynamicArray& other ) const{
         if(size_ != other.size_) return false;
-        for(unsigned int i = 0; i < size_ ; ++i)
+        for(int i = 0; i < size_ ; ++i)
             if(p[i] != other.p[i])
                 return false;
         return true;
@@ -772,7 +827,7 @@ public:
      *         false altrimenti
      */
     bool operator<(const DynamicArray& other) const{
-        for(unsigned int i = 0; i < size_ ; ++i){
+        for(int i = 0; i < size_ ; ++i){
             if(i >= other.size_) return false;
             if(p[i] >= other.p[i]) return false;
         }
@@ -786,7 +841,11 @@ public:
      *         false altrimenti
      */
     bool operator<=(const DynamicArray& other) const{
-        return *this == other || *this < other;
+        for(int i = 0; i < size_ ; ++i){
+            if(i >= other.size_) return false;
+            if(p[i] > other.p[i]) return false;
+        }
+        return true;
     }
     /**
      * Segnala se this è lessicograficamente maggiore di other
@@ -796,7 +855,11 @@ public:
      *         false altrimenti
      */
     bool operator>(const DynamicArray& other) const{
-        return !( *this == other || *this < other );
+        for(int i = 0; i < size_ ; ++i){
+            if(i >= other.size_) return true;
+            if(p[i] <= other.p[i]) return false;
+        }
+        return true;
     }
     /**
      * Segnala se this è lessicograficamente maggiore di other o equivalente ad esso
@@ -806,7 +869,11 @@ public:
      *         false altrimenti
      */
     bool operator>=(const DynamicArray& other) const{
-        return *this == other || *this > other;
+        for(int i = 0; i < size_ ; ++i){
+            if(i >= other.size_) return true;
+            if(p[i] < other.p[i]) return false;
+        }
+        return true;
     }
 private:
     /**
@@ -822,6 +889,7 @@ private:
                 reserve(capacity_ * coeff);
         }
     }
+
     /// puntatore all'array degli elementi
     std::unique_ptr<T[]> p;
     /// dimensione corrente del contenitore
@@ -832,3 +900,4 @@ private:
 
 
 #endif //CSVPARSER_DYNAMICARRAY_H
+
