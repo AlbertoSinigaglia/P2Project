@@ -11,9 +11,9 @@ int Data::giorniDelMese(unsigned int mese_, int anno_) {
 }
 
 Data Data::oggi() {
-    time_t now = time(nullptr);
-    tm *lt = localtime(&now);
-    return Data(lt->tm_year, lt->tm_mon, lt->tm_mday);
+    std::time_t now = time(nullptr);
+    tm *lt = std::localtime(&now);
+    return Data(lt->tm_year + 1900, lt->tm_mon + 1 , lt->tm_mday);
 }
 
 Data::Data(int a, unsigned int m, unsigned int g) : anno(a), mese(m-1), giorno(g) {
@@ -79,25 +79,21 @@ int Data::differenzaAnni(const Data &d) const {
     return anno - d.anno;
 }
 DifferenzaDate Data::operator-(const Data &d) const {
-    int diff;
-    DifferenzaDate data;
-    const Data& max = std::max(*this, d);
-    const Data& min = std::min(*this, d);
-    diff=static_cast<int>(max) - static_cast<int>(min);
-    data.anni=diff/365;
-    diff=diff%365;
-    data.mesi=diff/31;
-    data.giorni=diff%31;
-    return data;
+    int diff=static_cast<int>(std::max(*this, d)) - static_cast<int>(std::min(*this, d));
+    return {
+            diff % 365 % 31,
+            diff % 365 / 31,
+            diff / 365,
+    };
 }
 
 Data::operator int() const {
     int g = static_cast<int>(giorno);
-    int a = anno * 365 + (anno / 4 + 1);
+
     int m = 0;
     for(unsigned int i = 0 ; i < mese ; i++ )
         m += giorniDelMese(i,m);
-    return a + m + g;
+    return  m + g;
 }
 
 void Data::addRemoveGiorni(int g) {
@@ -187,3 +183,29 @@ std::ostream &operator<<(std::ostream &os, const Data &data) {
     return os << data.giorno << "/" << data.mese+1 << "/" << data.anno;
 }
 
+Data operator+(const Data &d, const DifferenzaDate &diff) {
+    Data cp(d);
+    cp.addRemoveAnni(diff.anni);
+    cp.addRemoveMesi(diff.mesi);
+    cp.addRemoveGiorni(diff.giorni);
+    return cp;
+}
+
+Data operator+(const DifferenzaDate &diff, const Data &d) {
+    Data cp(d);
+    cp.addRemoveAnni(diff.anni);
+    cp.addRemoveMesi(diff.mesi);
+    cp.addRemoveGiorni(diff.giorni);
+    return cp;
+}
+
+Data &Data::operator+=(const DifferenzaDate &diff) {
+    addRemoveAnni(diff.anni);
+    addRemoveMesi(diff.mesi);
+    addRemoveGiorni(diff.giorni);
+    return *this;
+}
+
+std::ostream& operator<<(std::ostream& os, const DifferenzaDate& d){
+     return os<<d.giorni<<" giorni, "<< d.mesi << " mesi, "<<d.anni<<" anni";
+}

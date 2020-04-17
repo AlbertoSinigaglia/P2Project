@@ -14,6 +14,7 @@ struct DifferenzaDate{
     int mesi;
     int anni;
 };
+std::ostream& operator<<(std::ostream& os, const DifferenzaDate& d);
 class Data {
     friend std::istream &operator>>(std::istream &, Data &);
     friend std::ostream &operator<<(std::ostream &,const Data &);
@@ -67,6 +68,11 @@ public:
     bool operator==(const Data &d1) const;
     bool operator<(const Data &) const;        //assunzione: qualsiasi data è maggiore di una data che non esiste
     bool operator>(const Data &) const;
+    /**
+     * Restituisce la differenza delle date tra (this, d);
+     * @param d : data da sottrarre
+     * @return : differenza date
+     */
     DifferenzaDate operator-(const Data &d) const;
     Data& operator+=(const DifferenzaDate& diff);
 
