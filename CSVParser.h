@@ -15,6 +15,18 @@
 #include <iostream>
 #include <sstream>
 #include "CSVInterface.h"
+namespace CSVParserDesign{
+    template<class InIter, class T, class Funct>
+    void split(InIter first, InIter last, const T&t, Funct f){
+        while(true){
+            InIter found = std::find(first, last, t);
+            f(first, last);
+            if(found == last)
+                break;
+            first == ++found;
+        }
+    }
+};
 class CSVParser{
     //valori generali di cui fare l'escape
     const std::vector<char> TO_ESCAPE = {
