@@ -88,7 +88,7 @@ namespace Conv{         // CONVENZIONI
 
     const unsigned int soglia_sistemi_gestiti_esperto = 1000;
 
-
+    const unsigned int media_n_nuovi_sistemi_mese = 10;
 
 
 // -------
@@ -148,14 +148,16 @@ namespace Conv{         // CONVENZIONI
 // EMPLOYEE
 // --------
 
-    const float bonus_esperienza_intermedia = 100.0f;
+    // bonus che viene dato all'impiegato che ha esperienza 10
+    const float bonus_esperienza_generica_max = 100.0f;
 
 // --------
 // SOFTWARE
 // --------
 
-    //bonus attribuito a sviluppatori che hanno un influenza sul progetto pari al 150%
-    const float bonus_influenza_progetto_150perc = 100;
+    // assumo come valore di fondo scala di influenza in un progetto un influenza doppia rispetto a un generico 
+    // sviluppatore software quindi ne attribuisco un bonus 
+    const float bonus_influenza_progetto_doppia = 100;
     //bonus complessità del linguaggio rispetto al C++
     const float bonus_complessità_CPP = 100;
 
@@ -166,6 +168,11 @@ namespace Conv{         // CONVENZIONI
 // --------
 // HARDWARE
 // --------
+
+    // bonus che viene dato all'impiegato che gestisce solo sistemi di sussistenza
+    const float bonus_solo_sussistenza = 100;
+    // è il bonus che viene dato a chi raggiunge nell'istate a un nuomero di sitemi gestiti pari a 20
+    const float bonus_dei_20_sistemi = 100;
 
 // -------
 // TECNICO

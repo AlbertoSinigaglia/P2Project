@@ -103,10 +103,18 @@ protected:
      */
     virtual float valoreLavoro() const;
 
+// -------------------
+// METODI NON VIRTUALI
+// -------------------
 
+    /**     CALCOLO BONUS LINEARE           (metodo statico reale)
+     * La maggiorparte dei bonus vengono calcolati grazie a una relazione di dipendenza lineare sulla base del
+     * valore bonus associato a una statistica a fondo scala rispetto a una caratteristica dell'impiegato.
+     * Non è direttamente proporzionale ma dip. lineare perchè il bonus viene assegnato solo se la stima (perc) è maggiore della media (il 50%) 
+     */
+    static float calcoloBonusLineare(double perc, float bonus_max);
  
 private:
-
 
 // ----------
 // CAMPI DATI

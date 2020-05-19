@@ -102,10 +102,9 @@ bool Software::produttivo() const{
 
 float Software::bonusStipendio() const { 
 
-    float bonus_influenza_progetti = 0;    
-    double infl_prog = influenzaProgetto();
-    if(infl_prog>1)
-            bonus_influenza_progetti = UFMath::proporzionaleAMedia(infl_prog-1, Conv::bonus_influenza_progetto_150perc);
+    // calcolo il bonus dell'influenza sui progetti, assumendo valore di fondo scala un influenza = 2 e  influenza media = 1,
+    // Pperciò adatto conseguentemmente calcoloBonusLineare(..)
+    float bonus_influenza_progetti = calcoloBonusLineare(influenzaProgetto() / 2.0, Conv::bonus_influenza_progetto_doppia);    
 
     float bonus_linguaggio = bonus_complessità_CPP * complessità_linguaggio[linguaggio];
 

@@ -15,7 +15,7 @@ public:
     Hardware(Persona persona, DatiLavoratore dati_lavoratore, DatiSistemi dati_sistemi);
 
     /*      PRODUTTIVO                      (metodo che eredita l'obbiettivo della classe base)*/
-    virtual bool produttivo() const override;
+    virtual bool produttivo() const;
 
     /*      BOUNS STIPENDIO                 (metodo che eredita l'obbiettivo della classe base)*/
     virtual float bonusStipendio() const;                                                                       //solo con certificato

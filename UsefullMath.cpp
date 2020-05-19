@@ -21,4 +21,12 @@ T proporzionaleAMedia(T media, unsigned int grado){
     return T * static_cast<T>(5 / grado);
 }
 
+
+
+
+
+
+
+
+
 }

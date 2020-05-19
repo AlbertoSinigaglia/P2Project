@@ -30,5 +30,23 @@ unsigned int Hardware::gradoEsperienza()  const{
 }
 
 
+bool Hardware::produttivo() const{
+
+    float punto_del_mese = static_cast<float>(Data::oggi().getGiorno()) / 30.0f;
+    int media_nuovi_sistemi_presente = static_cast<int>( punto_del_mese * Conv::media_n_nuovi_sistemi_mese );
+
+    return Employee::produttivo() || (nuovi_gestiti > media_nuovi_sistemi_presente);
+}
 
 
+float Hardware::bonusStipendio() const{
+    // calcolo il bonus che viene dato agli impiegati che gestiscono una notevolo quantità di sistemi di sussistenza
+    float bonus_responsabilità = calcoloBonusLineare(perc_sistemi_sussistenza, Conv::bonus_solo_sussistenza);
+    float bonus_quantitativo = calcoloBonusLineare(static_cast<double>(n_sistemi_gestiti) / 20.0, Conv::bonus_dei_20_sistemi);
+    return Employee::bonusStipendio() + bonus_responsabilità + bonus_quantitativo;
+}
+
+
+float Hardware::valoreLavoro() const{
+
+}
