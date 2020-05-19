@@ -1,3 +1,7 @@
+//
+// Created by Alberto Sinigaglia on 12/04/2020.
+//
+
 #ifndef CSVPARSER_DATA_H
 #define CSVPARSER_DATA_H
 
@@ -6,11 +10,17 @@
 #include <string>
 #include <sstream>
 struct DifferenzaDate{
-    int giorni;
-    int mesi;
-    int anni;
+    int giorni = 0;
+    int mesi = 0;
+    int anni = 0;
+    inline int inGiorni() const{ return giorni + mesi * 31 + anni * 365; };
+    inline int inMesi() const{ return mesi + anni * 12; };
+    inline int inAnni() const{ return anni; };
 };
 std::ostream& operator<<(std::ostream& os, const DifferenzaDate& d);
+
+
+
 class Data {
     friend std::istream &operator>>(std::istream &, Data &);
     friend std::ostream &operator<<(std::ostream &,const Data &);

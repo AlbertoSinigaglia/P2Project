@@ -4,6 +4,7 @@
 
 #ifndef CSVPARSER_DYNAMICARRAY_H
 #define CSVPARSER_DYNAMICARRAY_H
+#include <memory>
 template<class T> class DynamicArray;
 template<class T> class iterator;
 template<class T> class const_iterator;
