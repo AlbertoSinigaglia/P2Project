@@ -2,9 +2,9 @@
 // Created by Alberto Sinigaglia on 10/04/2020.
 //
 
-#include "FrontEnd.h"
+#include "GUIDev.h"
 
-unsigned int FrontEnd::calcolaStipendio() const {
+unsigned int GUIDev::calcolaStipendio() const {
     auto bonus_righe_codice = 0.0f;
     auto bonus_pagine = static_cast<float>(num_pagine)*0.02f;
     auto bonus_libreria = 0;
@@ -30,7 +30,7 @@ unsigned int FrontEnd::calcolaStipendio() const {
             bonus_libreria = 20;
             break;
         default:
-            break;
+            break; 
     }
     bonus_righe_codice *= static_cast<float>(Software::getRigheCodice());
     return static_cast<unsigned int>(bonus_righe_codice) +
@@ -38,7 +38,8 @@ unsigned int FrontEnd::calcolaStipendio() const {
            Software::calcolaStipendio() +
            static_cast<unsigned int>(bonus_pagine);
 }
-double FrontEnd::valoreLavoro() const {
+
+double GUIDev::valoreLavoro() const {
     auto valore_righe_codice = 0.0f;
     switch(libreria){
         case Libreria::BOOTSTRAP:
@@ -59,7 +60,12 @@ double FrontEnd::valoreLavoro() const {
         default:
             break;
     }
-    valore_righe_codice *= getNRigheCodice();
+    valore_righe_codice *= getRigheCodice();
     auto valore_pagine = num_pagine * 0.1;
     return valore_righe_codice+valore_pagine;
+}
+
+
+unsigned int GUIDev::getStipendioFisso() const{
+    return FRONTEND_STIPENDIO_FISSO;
 }

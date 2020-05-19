@@ -2,10 +2,10 @@
 // Created by Alberto Sinigaglia on 10/04/2020.
 //
 
-#include "BackEnd.h"
+#include "DBDev.h"
 
 
-unsigned int BackEnd::calcolaStipendio() const {
+unsigned int DBDev::calcolaStipendio() const {
     auto bonus_righe_codice = 0.0f;
     auto bonus_libreria = 0u;
     switch(linguaggio){
@@ -16,7 +16,7 @@ unsigned int BackEnd::calcolaStipendio() const {
         case Linguaggio::JAVA:
             bonus_righe_codice+= 0.4f;
             bonus_libreria = 20u;
-            break;
+            break; 
         case Linguaggio::PHP:
             bonus_righe_codice+= 0.6f;
             bonus_libreria = 20u;
@@ -45,7 +45,7 @@ unsigned int BackEnd::calcolaStipendio() const {
             bonus_libreria;
 }
 
-double BackEnd::valoreLavoro() const {
+double DBDev::valoreLavoro() const {
     auto valore_codice = 0.0f;
     switch(linguaggio){
         case Linguaggio::PYTHON:
@@ -69,9 +69,14 @@ double BackEnd::valoreLavoro() const {
         default:
             break;
     }
-    valore_codice *= getNRigheCodice();
+    valore_codice *= getRigheCodice();
     // in media un programmatore fa un database ogni 3 progetti
     auto valore_db = getDataAssunzione().differenzaMesi(date::oggi()) *0.3;
     return valore_db+valore_codice;
 
+}
+
+
+unsigned int DBDev::getStipendioFisso() const{
+    return DBDEV_STIPENDIO_FISSO;
 }
