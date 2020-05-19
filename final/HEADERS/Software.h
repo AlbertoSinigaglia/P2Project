@@ -4,6 +4,7 @@
 
 #include "Employee.h"  
 
+
 class Software: virtual public Employee{
 
 public: 

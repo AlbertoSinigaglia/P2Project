@@ -1,11 +1,6 @@
 #include"Data.h"
 #include"Convenzioni.cpp"
 
-//---------------awdawdhagwdjhvba wdbavwjdvghavwdjhvgawd bawdba wd
-//ATTENZIONE     ATTENZIONE     ATTENZIONE      ATTENZIONE  ATTENZIONE
-//HAHWVDh awdmnaw dbawdjajwjdb awndm awdn awkdnajwdbba wbdanw d
-//  verifica se va fatta rimplementazione in file apposito CPP
-
 
 // Campi dati estesi dalla classe Employee
 

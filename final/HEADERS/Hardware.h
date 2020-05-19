@@ -1,6 +1,6 @@
 //
 // Created by Alberto Sinigaglia on 05/04/2020.
-//
+// 
   
 #ifndef CSVPARSER_HARDWARE_H
 #define CSVPARSER_HARDWARE_H
@@ -28,10 +28,6 @@ public:
     */
     virtual unsigned int gradoEsperienza()  const;  
 
-protected:
-
-    /*      VALORE LAVORO                   (metodo che eredita l'obbiettivo della classe base)*/
-    virtual float valoreLavoro() const;                                                                  // solo con num sistemi gestiti
 
 private:
 

@@ -4,7 +4,7 @@
  
 #include "Hardware.h" 
 
-
+ 
 Hardware::Hardware(Persona persona, DatiLavoratore dati_lavoratore, DatiSistemi dati_sistemi):
                 Employee(persona,dati_sistemi.dati_lavoratore),
                 n_sistemi_gestiti(dati_sistemi.n_sistemi_gestiti),
@@ -31,7 +31,7 @@ unsigned int Hardware::gradoEsperienza()  const{
 
 
 bool Hardware::produttivo() const{
-
+    // Vene calcolato confrontando quanti sistemi ha acquisito fin ora nel mese con il numero di quelli che un impiegato hardware generico dovrebbe aver acquisito fin ora
     float punto_del_mese = static_cast<float>(Data::oggi().getGiorno()) / 30.0f;
     int media_nuovi_sistemi_presente = static_cast<int>( punto_del_mese * Conv::media_n_nuovi_sistemi_mese );
 
@@ -40,13 +40,10 @@ bool Hardware::produttivo() const{
 
 
 float Hardware::bonusStipendio() const{
-    // calcolo il bonus che viene dato agli impiegati che gestiscono una notevolo quantità di sistemi di sussistenza
+    // calcolo il bonus che viene dato agli impiegati che gestiscono una notevole quantità di sistemi di sussistenza e perciò 
+    // sono fiugure più influenti e che devono premunirsi di più precauzioni
     float bonus_responsabilità = calcoloBonusLineare(perc_sistemi_sussistenza, Conv::bonus_solo_sussistenza);
+    // calcolo un bonus che viene assegnato a chi gestisce molti sistemi, questo richiede una lavoro maggiore di organizzazione
     float bonus_quantitativo = calcoloBonusLineare(static_cast<double>(n_sistemi_gestiti) / 20.0, Conv::bonus_dei_20_sistemi);
     return Employee::bonusStipendio() + bonus_responsabilità + bonus_quantitativo;
-}
-
-
-float Hardware::valoreLavoro() const{
-
 }
