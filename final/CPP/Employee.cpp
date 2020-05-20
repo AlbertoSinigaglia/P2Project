@@ -61,15 +61,15 @@ bool Employee::produttivo() const {
 }
 
 float Employee::bonusStipendio() const{
-    float bonus_esperienza = calcoloBonusLineare( gradoEsperienza() /10.0, Conv::bonus_esperienza_generica_max );
+    float bonus_esperienza = calcoloBonusLineare(0.6, gradoEsperienza() /10.0, Conv::bonus_esperienza_generica_max );
     return bonus_esperienza;
 } 
 
 
-float Employee::calcoloBonusLineare(double perc, float bonus_max){
+float Employee::calcoloBonusLineare(double percBase, double perc, float bonus_max){
 
-    if(perc < 0.5) return 0;
+    if(perc < percBase) return 0;
     if(perc > 1) return bonus_max;
 
-    return bonus_max * (perc - 0.5) / 0.5;
+    return (bonus_max / (1-percBase)) * (perc - percBase);
 }

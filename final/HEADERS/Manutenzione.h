@@ -1,7 +1,7 @@
 #ifndef CSVPARSER_MANUTENZIONE_H
 #define CSVPARSER_MANUTENZIONE_H
  
-
+ 
 #include "Employee.h" 
 
 class Manutenzione: virtual public Employee{
@@ -19,7 +19,7 @@ public:
     virtual double percRipristino() const = 0;
 
     /*      PRODUTTIVO                      (metodo che eredita l'obbiettivo della classe base)*/
-    virtual bool produttivo() const override;
+    virtual bool produttivo() const;
 
     /*      BOUNS STIPENDIO                 (metodo che eredita l'obbiettivo della classe base)*/
     virtual float bonusStipendio() const;
@@ -33,8 +33,6 @@ protected:
     virtual float valoreLavoro() const;
 
 private:
-
-    static const double status_accettabile = 0.9;
 
     unsigned int perc_riparazioni_peggiorative;
 

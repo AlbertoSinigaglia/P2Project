@@ -104,7 +104,7 @@ float Software::bonusStipendio() const {
 
     // calcolo il bonus dell'influenza sui progetti, assumendo valore di fondo scala un influenza = 2 e  influenza media = 1,
     // Pperciò adatto conseguentemmente calcoloBonusLineare(..)
-    float bonus_influenza_progetti = calcoloBonusLineare(influenzaProgetto() / 2.0, Conv::bonus_influenza_progetto_doppia);    
+    float bonus_influenza_progetti = calcoloBonusLineare(0.5, influenzaProgetto() / 2.0, Conv::bonus_influenza_progetto_doppia);    
 
     float bonus_linguaggio = bonus_complessità_CPP * complessità_linguaggio[linguaggio];
 

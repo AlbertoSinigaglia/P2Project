@@ -21,11 +21,11 @@ namespace Conv{         // CONVENZIONI
     };
 
     enum Libreria{
-        BOOTSTRAP,
-        JQUERY,
-        TREEJS,
-        ANGULAR, 
-        VUEJS
+        BOOTSTRAP = 0,
+        JQUERY = 1,
+        TREEJS = 2,
+        ANGULAR = 3, 
+        VUEJS = 4
     };
 
 
@@ -47,7 +47,7 @@ namespace Conv{         // CONVENZIONI
      * Stabilisce il raporto tra:      la remunerazione (per l'impiegato) del suo lavoro
      *                         e:      il valore lordo del lavoro dell'impiegato che apporta all'azienda
      */
-    const double perc_remunerazione = 0.8; 
+    const double perc_remunerazione = 0.8;
 
     const unsigned int soglia_anni_esperto = 20;
 
@@ -56,8 +56,8 @@ namespace Conv{         // CONVENZIONI
 // SOFTWARE
 // --------
 
-    const DifferenzaDate durata_progetto_medio = DifferenzaDate(1,0,0);                 
-    const unsigned int n_righe_progetto_medio = 10000;    
+    const DifferenzaDate durata_progetto_medio = DifferenzaDate{1,0,0};
+    const unsigned int n_righe_progetto_medio = 10000;
     const unsigned int n_impiegati_progetto_medio = 5;
     const float valore_annuo_progetto_medio = 100000.0;
 
@@ -71,16 +71,14 @@ namespace Conv{         // CONVENZIONI
         complessità relativa linguaggio(i) = (a parità di requisito) tempo impiegato per scrivere codice  
                                              in linguaggio(i) / quello impiegato usando il C++
     */
-    const float complessità_linguaggio[8] = {0.3f, 0.5f, 0.6f, 1.0f, 0.4f, 0.8f, 0.2f, 0.3f};        
+    const float complessità_linguaggio[8] = {0.3f, 0.5f, 0.6f, 1.0f, 0.4f, 0.8f, 0.2f, 0.3f};
 
 
 // -----------
 // MANUTENTORE
 // -----------
 
-
-
-
+    const double status_accettabile = 0.9;
 
 // --------
 // HARDWARE
@@ -141,7 +139,7 @@ namespace Conv{         // CONVENZIONI
 
 
 // ------------------------------------------------------------------
-//                          BONUS AZIENDALI
+//                        BONUS E MALUS AZIENDALI
 // ------------------------------------------------------------------
 
 // --------
@@ -164,6 +162,12 @@ namespace Conv{         // CONVENZIONI
 // -----------
 // MANUTENTORE
 // -----------
+
+    const float bonus_status_ottimo = 100;
+    // bonus che viene dato a chi non aggiunge nessun proplema durante la riparazione
+    const float bonus_nessun_peggioramento = 100;
+    // un malus che viene dato se tutte le riparazioni che ha tentato il manutentore hanno comportato un peggioramento
+    const float malus_riparazioni_peggiorative_estremo = 100;
 
 // --------
 // HARDWARE

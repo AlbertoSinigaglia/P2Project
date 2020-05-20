@@ -110,9 +110,9 @@ protected:
     /**     CALCOLO BONUS LINEARE           (metodo statico reale)
      * La maggiorparte dei bonus vengono calcolati grazie a una relazione di dipendenza lineare sulla base del
      * valore bonus associato a una statistica a fondo scala rispetto a una caratteristica dell'impiegato.
-     * Non è direttamente proporzionale ma dip. lineare perchè il bonus viene assegnato solo se la stima (perc) è maggiore della media (il 50%) 
+     * È dip. linearmente perchè il bonus viene assegnato solo se la percentuale base : percBase 
      */
-    static float calcoloBonusLineare(double perc, float bonus_max);
+    static float calcoloBonusLineare(double percBase, double perc, float bonus_max);
  
 private:
 

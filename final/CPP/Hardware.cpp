@@ -42,8 +42,8 @@ bool Hardware::produttivo() const{
 float Hardware::bonusStipendio() const{
     // calcolo il bonus che viene dato agli impiegati che gestiscono una notevole quantità di sistemi di sussistenza e perciò 
     // sono fiugure più influenti e che devono premunirsi di più precauzioni
-    float bonus_responsabilità = calcoloBonusLineare(perc_sistemi_sussistenza, Conv::bonus_solo_sussistenza);
+    float bonus_responsabilità = calcoloBonusLineare(0.6, perc_sistemi_sussistenza, Conv::bonus_solo_sussistenza);
     // calcolo un bonus che viene assegnato a chi gestisce molti sistemi, questo richiede una lavoro maggiore di organizzazione
-    float bonus_quantitativo = calcoloBonusLineare(static_cast<double>(n_sistemi_gestiti) / 20.0, Conv::bonus_dei_20_sistemi);
+    float bonus_quantitativo = calcoloBonusLineare(0.5, static_cast<double>(n_sistemi_gestiti) / 20.0, Conv::bonus_dei_20_sistemi);
     return Employee::bonusStipendio() + bonus_responsabilità + bonus_quantitativo;
 }
