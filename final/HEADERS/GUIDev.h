@@ -45,6 +45,9 @@ protected:
      */
     unsigned int gradoProfessionalità() const;
 
+    /**     REMUNERAZIONE ORA ROUTINE       (metodo che eredita l'obbiettivo della classe: Employee)*/
+    virtual float remunerazioneOraRoutine() const;
+
 
 private:
 

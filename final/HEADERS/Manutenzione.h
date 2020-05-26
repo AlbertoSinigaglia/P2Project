@@ -3,7 +3,7 @@
  
  
 #include "Employee.h" 
-
+ 
 class Manutenzione: virtual public Employee{
  
 public:
@@ -32,9 +32,26 @@ protected:
     /*      VALORE LAVORO                   (metodo che eredita l'obbiettivo della classe base)*/
     virtual float valoreLavoro() const;
 
+    /**     VALORE MEDIO RIPARAZIONE
+     * Il metodo restituisce il valore medio che da all'azionda 1 riparazione
+     */
+    virtual float valoreMedioRiparazione() const = 0;
+
+    /**     QUANTITÀ CONSIDEREVOLE RIPARAZIONI 
+     * Il metodo ritorna la quantità di manutenzioni che è considerata meritevole (per il tipo di mansione che svolge)
+     * in un mese per aggiudicarsi il bonus: bonus_n_riparazioni_considerevole (convenzione)
+     */
+    virtual unsigned int quantitàConsiderevoleRiparazioni() const = 0;
+
+    unsigned int getPercRiparazioniInefficaci() const;
+    unsigned int getNRiparazioniMese() const;
+
+
 private:
 
-    unsigned int perc_riparazioni_peggiorative;
+    unsigned int perc_riparazioni_inefficaci;
+
+    unsigned int n_riparazioni_mese;
 
     double perc_ripristino_medio;
 

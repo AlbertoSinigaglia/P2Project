@@ -1,19 +1,19 @@
 #include "Manutenzione.h" 
  
 
-Manutenzione::Manutenzione(Persona p, DatiLavoratore dl, DatiManutenzione dm):
-                Employee(p,dl),
-                perc_riparazioni_peggiorative(dm.perc_riparazioni_peggiorative),
-                perc_ripristino_medio(dm.perc_ripristino_medio){}
+Manutenzione::Manutenzione(Persona persona, DatiLavoratore dati_lavoratore, DatiManutenzione dati_manutenzione):
+                Employee(persona,dati_lavoratore),
+                perc_riparazioni_inefficaci(dati_manutenzione.perc_riparazioni_inefficaci),
+                perc_ripristino_medio(dati_manutenzione.perc_ripristino_medio),
+                n_riparazioni_mese(dati_manutenzione.n_riparazioni_mese){}
 
 
 void Manutenzione::aggiornaMese(){
     // aggiorno la percentuale di ripristino medio che tiene conto del grado di manutenzione in tutto l'arco lavorativo
     int mesi_dall_assunzione = (Data::oggi()-getDataAssunzione()).inMesi();
     // ..sotto l'assunzione che percRipristino mi ritorna il grado di manutenzione del mese contemporaneo..
-    //Calcolo una media pesata
-    perc_ripristino_medio =  (static_cast<double>(mesi_dall_assunzione)*perc_ripristino_medio + percRipristino() )
-                              / (mesi_dall_assunzione + 1) ;
+    //Calcolo una media pesata in modo che rimanga rispettata la definizione di perc_ripristino_medio 
+    perc_ripristino_medio = UFMath::mediaPonderata(static_cast<double>(mesi_dall_assunzione), perc_ripristino_medio, 1.0, percRipristino());
 }
 
 
@@ -26,13 +26,31 @@ bool Manutenzione::produttivo() const{
 float Manutenzione::bonusStipendio() const{
 
     float bonus_competenza = calcoloBonusLineare( Conv::status_accettabile, perc_ripristino_medio, Conv::bonus_status_ottimo );
-    float bonus_ci_penso_io = (perc_riparazioni_peggiorative == 1) ? Conv::bonus_nessun_peggioramento : 0;
+    
+    unsigned int n_riparazioni_considerevoli_nel_mese = quantitàConsiderevoleRiparazioni() * Data::oggi().getGiorno / 30 ;
+    float bonus_quantità_riparazioni = calcoloBonusLineare( 0.5,
+                                                            n_riparazioni_mese / n_riparazioni_considerevoli_nel_mese,
+                                                            Conv::bonus_n_riparazioni_considerevole );
 
-    return Employee::bonusStipendio() + bonus_competenza + bonus_ci_penso_io;
+    return Employee::bonusStipendio() + bonus_competenza + bonus_quantità_riparazioni;
 }
 
 
 float Manutenzione::valoreLavoro() const{
-    //tolgo un malus ( = - bonus) al valore del suo lavoro che indica la penalizzazione indotta dai peggioramenti che ha causato
-    return Employee::valoreLavoro() - calcoloBonusLineare( 0, perc_riparazioni_peggiorative, Conv::malus_riparazioni_peggiorative_estremo);
+    //tolgo un malus (derivato dalle riparazioni inefficaci) al valore del suo lavoro ottenuto dal valore di tutte le sue riparazioni
+    float valore_riparzioni = (n_riparazioni_mese * (1.0 - perc_riparazioni_inefficaci)) * valoreMedioRiparazione();
+    return Employee::valoreLavoro() + valore_riparzioni;
+}
+
+
+
+
+
+
+unsigned int Manutenzione::getPercRiparazioniInefficaci() const{
+
+}
+
+unsigned int Manutenzione::getNRiparazioniMese() const{
+
 }

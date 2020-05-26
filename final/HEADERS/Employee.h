@@ -16,7 +16,7 @@ class Employee: private Persona{
 // --------------------------------------------------------------------------------------------------------------
 //                                      RISORSE DISPONIBILI  ( PUBLIC E PROTECTED )
 // --------------------------------------------------------------------------------------------------------------
-
+ 
 public:
 
     /**     COSTRUTTORE
@@ -92,16 +92,23 @@ protected:
 // ---------------
 
 
-    /**     VALORE ORA             (metodo reale)
-     * Il metodo ritorna il valore (lordo) apportato all'azienda da un ora di lavoro di routine dell'impiegato in questione
+    /**     REMUNERAZIONE ORA ROUTINE       (metodo reale)
+     * Il metodo ritorna l'ammontare in euro del costo (per l'azineda) di un ora di lavoro dell'impiegato in questione
+     * È un valore standard (convenzioni sui vari tipi di lavoro) che viene usato per calcolare lo stipendio
      */
-    virtual float ValoreOraRoutine() const = 0;
+    virtual float remunerazioneOraRoutine() const = 0;
 
     /**     VALORE LAVORO                   (metodo reale)
-     * Il metodo ritorna un approssimazione (in euro) del valore LORDO che apporta un impiegato all'azienda al mese
-     * secondo il valore del suo lavoro di routine e stime sui rececenti sviluppi del suo lavoro ed eventi ecezionali (nel mese attuale)
+     * Il metodo ritorna un approssimazione (in euro) del valore LORDO che sta apportando un impiegato all'azienda fin ora nel mese
+     * secondo stime sui rececenti sviluppi del suo lavoro ed eventi ecezionali (nel mese attuale)
      */
-    virtual float valoreLavoro() const;
+    virtual float valoreLavoro() const = 0;
+
+    /**     ORE LAVORO NEL MESE             (metodo intero)
+     * Il metodo ritorna il numero di ore di lavoro dell'impiegato da inizio mese fino adesso
+     * é virtual per permettere in caso di aggiungerci vari straordinari
+     */
+    virtual unsigned int oreLavoroNelMese() const;
 
 // -------------------
 // METODI NON VIRTUALI
@@ -113,7 +120,11 @@ protected:
      * È dip. linearmente perchè il bonus viene assegnato solo se la percentuale base : percBase 
      */
     static float calcoloBonusLineare(double percBase, double perc, float bonus_max);
- 
+
+    Data getDataAssunzione() const;
+    unsigned int getOreLavoroSett() const;
+
+
 private:
 
 // ----------

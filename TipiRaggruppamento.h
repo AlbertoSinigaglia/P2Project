@@ -38,12 +38,14 @@ struct DatiDeveloping{
 // Campi dati estesi dalla classe Manutentore
 
 struct DatiManutenzione{
-    unsigned int perc_riparazioni_peggiorative;
+    unsigned int perc_riparazioni_inefficaci;
     double perc_ripristino_medio;
+    unsigned int n_riparazioni_mese;
 
-    DatiManutenzione(unsigned int prp, double prm = 1):
-            perc_riparazioni_peggiorative(prp),
-            perc_ripristino_medio(prm){}
+    DatiManutenzione(unsigned int prp, double prm = 1, unsigned int nrm = 0):
+            perc_riparazioni_inefficaci(prp),
+            perc_ripristino_medio(prm),
+            n_riparazioni_mese(nrm){}
 };
 
 // Campi dati estesi dalla classe Hardware
@@ -51,15 +53,13 @@ struct DatiManutenzione{
 struct DatiSistemi{
     unsigned int n_sistemi_gestiti;     
     unsigned int n_sistemi_malfunzionanti;
-    double perc_sistemi_sussistenza;
     unsigned int n_sistemi_gestiti_totale;   
     unsigned int nuovi_gestiti;   
 
-    DatiSistemi(unsigned int nsg, unsigned int nsm, double pss, 
+    DatiSistemi(unsigned int nsg, unsigned int nsm, 
                 unsigned int nsgt = 0, unsigned int ng = 0):
             n_sistemi_gestiti(nsg),
             n_sistemi_malfunzionanti(nsm),
-            perc_sistemi_sussistenza(pss),
             n_sistemi_gestiti_totale(nsgt),
             nuovi_gestiti(ng){}
 };
@@ -68,14 +68,12 @@ struct DatiSistemi{
 
 struct DatiRiparazioneSistemi{
     unsigned int n_riparazioni_senza_stallo;
-    unsigned int n_riparazioni_con_stallo;
+    unsigned int perc_riparazioni_sussistenti;
     unsigned int ore_stallo_mensili;
     unsigned int ore_straordinari;
 
-    DatiRiparazioneSistemi(unsigned int nrss = 0, unsigned int nrcs = 0,
-                            unsigned int osm = 0, unsigned int os = 0):
-            n_riparazioni_senza_stallo(nrss),
-            n_riparazioni_con_stallo(nrcs),
+    DatiRiparazioneSistemi(unsigned int prs = 0, unsigned int osm = 0, unsigned int os = 0):
+            perc_riparazioni_sussistenti(prs),
             ore_stallo_mensili(osm),
             ore_straordinari(os){}
 };

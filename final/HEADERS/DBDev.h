@@ -37,8 +37,8 @@ protected:
     /**     RIUTILIZZABILITÀ                (metodo che eredita l'obbiettivo della classe base)*/
     virtual unsigned int riutilizzabilità() const;                                                             // sfrutta grado ortogonalità
 
-    /**     VALORE ORA                      (metodo che eredita l'obbiettivo della classe: Employee)*/
-    virtual float ValoreOraRoutine() const = 0;
+    /**     REMUNERAZIONE ORA ROUTINE       (metodo che eredita l'obbiettivo della classe: Employee)*/
+    virtual float remunerazioneOraRoutine() const;
 
 private:
 

@@ -93,7 +93,16 @@ namespace Conv{         // CONVENZIONI
 // TECNICO
 // ------- 
 
+    const float remunerazione_ora_routine_tecnico = 10;
 
+    const float valore_piccola_riparazione = 10;
+    const float valore_riparazione_sussistente = 10;
+
+    const float perdita_di_sussistenza = 10;  // esprime quanto perde l'azienda all'ora in stallo a causa dell' assenza di un sistema di sussistenza
+
+    const unsigned int ore_ripristino_stallo_pessimo = 10;
+
+    const unsigned int n_riparazioni_considervole_tecnico = 10;
 
 
 // -------------
@@ -164,23 +173,23 @@ namespace Conv{         // CONVENZIONI
 // -----------
 
     const float bonus_status_ottimo = 100;
-    // bonus che viene dato a chi non aggiunge nessun proplema durante la riparazione
-    const float bonus_nessun_peggioramento = 100;
-    // un malus che viene dato se tutte le riparazioni che ha tentato il manutentore hanno comportato un peggioramento
-    const float malus_riparazioni_peggiorative_estremo = 100;
+
+    const float bonus_n_riparazioni_considerevole = 10;
 
 // --------
 // HARDWARE
 // --------
 
-    // bonus che viene dato all'impiegato che gestisce solo sistemi di sussistenza
-    const float bonus_solo_sussistenza = 100;
     // è il bonus che viene dato a chi raggiunge nell'istate a un nuomero di sitemi gestiti pari a 20
     const float bonus_dei_20_sistemi = 100;
 
 // -------
 // TECNICO
 // -------
+
+    // bonus che viene dato all'impiegato che gestisce solo sistemi di sussistenza
+    const float bonus_solo_sussistenza = 100;
+    
 
 // -------------
 // ITSECURITYDEV

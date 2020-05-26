@@ -9,6 +9,14 @@
 #include "Hardware.h"
 #include "Manutenzione.h"
 
+
+/** ASSUNZIONE:
+ *  1) Il tecnico può prendere ore di straodinari se e solo se queste servono 
+ *     a svolgere una riparazione che sta obbligando uno stallo nella produzione dell'azienda.
+ *  2) Gli stalli vengono causati da tutte e sole le riparazioni a sistemi di sussistenza
+ */
+
+
 class Tecnico : public Manutenzione, public Hardware{
 
 public:
@@ -27,32 +35,41 @@ public:
     /**     AGGIORNA MESE                   (metodo che eredita l'obbiettivo della classe base)*/
     virtual void aggiornaMese();
 
+
 protected:                       
 
     /*      VALORE LAVORO                   (metodo che eredita l'obbiettivo della classe base)*/
     virtual float valoreLavoro() const = 0;
 
-    /**     VALORE ORA                      (metodo che eredita l'obbiettivo della classe: Employee)*/
-    virtual float ValoreOraRoutine() const = 0;
+    /**     REMUNERAZIONE ORA ROUTINE       (metodo che eredita l'obbiettivo della classe: Employee)*/
+    virtual float remunerazioneOraRoutine() const;
+
+    /*      VALORE RIPARAZIONE              (metodo che eredita l'obbiettivo della classe base)*/
+    virtual float valoreMedioRiparazione() const;
+
+    /**     ORE LAVORO NEL MESE             (metodo che eredita l'obbiettivo della classe: Employee)
+     *  in più aggiungo gli straordinari di riparazioni
+    */
+    virtual unsigned int oreLavoroNelMese() const;
+
+    /*      QUANTITÀ CONSIDEREVOLE RIPARAZIONI         (metodo che eredita l'obbiettivo della classe base)*/  
+    virtual unsigned int quantitàConsiderevoleRiparazioni() const = 0;
 
 
 private:
 
-    static const float VALORE_ORA_ROUTINE = 10;
 
-    static const float PERDITA_DI_SUSSITENZA = 10;  // esprime quanto perde l'azzienda all'ora in assenza di un sistema di sussistenza
+    unsigned int oreRiparazioneStallo() const;
 
-    static const unsigned int ORE_PESSIME_RIPRISTINO_STALLO = 10;
+    unsigned int orePiccolaRiparazione() const;
 
+    unsigned int oreRisparmiateStalli() const;
 
 /**
  * CAMPI MENSILI
  */
-    unsigned int n_riparazioni_senza_stallo;
-    unsigned int n_riparazioni_con_stallo;
-
+    unsigned int perc_riparazioni_sussistenti;
     unsigned int ore_stallo_mensili;
-
     unsigned int ore_straordinari;
 };
 

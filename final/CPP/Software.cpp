@@ -57,11 +57,8 @@ unsigned int Software::riutilizzabilità() const{
 
 
 unsigned int Software::orePerProgetto() const{
-
-    double n_giorni_da_inizio_mese = static_cast<double>(Data::oggi().getGiorno() );
-    double n_ore_lavorative = (n_giorni_da_inizio_mese / 7.0) * static_cast<double>(getOreLavoroSett());
     // calcolato sulla base di quanti progetti sono stati conclusi fino a questo punto del mese
-    return static_const<unsigned int> ( n_ore_lavorative / static_cast<double>(n_progetti_conclusi_mese);
+    return  oreLavoroNelMese() / n_progetti_conclusi_mese;
 }
 
 

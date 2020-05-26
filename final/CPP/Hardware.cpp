@@ -9,7 +9,6 @@ Hardware::Hardware(Persona persona, DatiLavoratore dati_lavoratore, DatiSistemi 
                 Employee(persona,dati_sistemi.dati_lavoratore),
                 n_sistemi_gestiti(dati_sistemi.n_sistemi_gestiti),
                 n_sistemi_malfunzionanti(dati_sistemi.n_sistemi_malfunzionanti),
-                perc_sistemi_sussistenza(dati_sistemi.perc_sistemi_sussistenza),
                 n_sistemi_gestiti_totale(dati_sistemi.n_sistemi_gestiti_totale),
                 nuovi_gestiti(dati_sistemi.nuovi_gestiti){}
 
@@ -40,10 +39,25 @@ bool Hardware::produttivo() const{
 
 
 float Hardware::bonusStipendio() const{
-    // calcolo il bonus che viene dato agli impiegati che gestiscono una notevole quantità di sistemi di sussistenza e perciò 
-    // sono fiugure più influenti e che devono premunirsi di più precauzioni
-    float bonus_responsabilità = calcoloBonusLineare(0.6, perc_sistemi_sussistenza, Conv::bonus_solo_sussistenza);
+
     // calcolo un bonus che viene assegnato a chi gestisce molti sistemi, questo richiede una lavoro maggiore di organizzazione
     float bonus_quantitativo = calcoloBonusLineare(0.5, static_cast<double>(n_sistemi_gestiti) / 20.0, Conv::bonus_dei_20_sistemi);
     return Employee::bonusStipendio() + bonus_responsabilità + bonus_quantitativo;
 }
+
+
+
+
+
+
+
+unsigned int Hardware::getNSistemiMalfunzionanti() const{
+
+}
+unsigned int Hardware::getNSistemiGestiti() const{
+
+}
+unsigned int Hardware::getPercSistemiSussistenza() const{
+
+}
+

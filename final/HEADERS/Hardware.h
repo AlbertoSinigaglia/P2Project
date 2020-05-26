@@ -29,16 +29,21 @@ public:
     virtual unsigned int gradoEsperienza()  const;  
 
 
+protected:
+
+unsigned int getNSistemiMalfunzionanti() const;
+unsigned int getNSistemiGestiti() const;
+unsigned int getPercSistemiSussistenza() const;
+
+
 private:
 
-    /**     CAMPI MENSILI
-     */
-    unsigned int n_sistemi_gestiti;
+    //     CAMPO MENSILE
     unsigned int nuovi_gestiti;                
-    unsigned int n_sistemi_malfunzionanti;
-    double perc_sistemi_sussistenza;
 
-    unsigned int n_sistemi_gestiti_totale;         
+    unsigned int n_sistemi_gestiti;
+    unsigned int n_sistemi_malfunzionanti;
+    unsigned int n_sistemi_gestiti_totale;    
 };
 
 
