@@ -94,6 +94,7 @@ namespace Conv{         // CONVENZIONI
 // ------- 
 
     const float remunerazione_ora_routine_tecnico = 10;
+    const unsigned int n_riparazioni_considervole_tecnico = 10;
 
     const float valore_piccola_riparazione = 10;
     const float valore_riparazione_sussistente = 10;
@@ -102,13 +103,24 @@ namespace Conv{         // CONVENZIONI
 
     const unsigned int ore_ripristino_stallo_pessimo = 10;
 
-    const unsigned int n_riparazioni_considervole_tecnico = 10;
-
 
 // -------------
 // ITSECURITYDEV
 // -------------
 
+    const float remunerazione_ora_routine_ITSecurityDev = 10;
+    const unsigned int n_riparazioni_considervole_ITSecurityDev = 10;
+
+    const float perdita_breccia = 10;
+
+    const float valore_manutenzione_non_critica = 10;
+    const float valore_manutenzione_critica = 10;
+
+    const double perc_pessimistica_manutenzioni_critiche = 100;
+
+    const unsigned int media_n_righe_manutenzione_critica = 23;
+
+    const unsigned int tolleranza_n_problemi_aperti_mese = 5;
 
 
 
@@ -168,6 +180,9 @@ namespace Conv{         // CONVENZIONI
     //bonus complessità del linguaggio rispetto al C++
     const float bonus_complessità_CPP = 100;
 
+    // è un malus che esprime in quale percentuale la velocità di scrittura diminuisce per uno sviluppatore con grado Esperienza == 0
+    const float malus_inseperto_scrittura = 0.2;
+
 // -----------
 // MANUTENTORE
 // -----------
@@ -194,6 +209,8 @@ namespace Conv{         // CONVENZIONI
 // -------------
 // ITSECURITYDEV
 // -------------
+
+    const float bonus_
 
 // -------
 // BACKDEV

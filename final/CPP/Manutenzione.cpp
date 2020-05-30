@@ -14,6 +14,8 @@ void Manutenzione::aggiornaMese(){
     // ..sotto l'assunzione che percRipristino mi ritorna il grado di manutenzione del mese contemporaneo..
     //Calcolo una media pesata in modo che rimanga rispettata la definizione di perc_ripristino_medio 
     perc_ripristino_medio = UFMath::mediaPonderata(static_cast<double>(mesi_dall_assunzione), perc_ripristino_medio, 1.0, percRipristino());
+
+    n_riparazioni_mese = 0;
 }
 
 
@@ -27,7 +29,7 @@ float Manutenzione::bonusStipendio() const{
 
     float bonus_competenza = calcoloBonusLineare( Conv::status_accettabile, perc_ripristino_medio, Conv::bonus_status_ottimo );
     
-    unsigned int n_riparazioni_considerevoli_nel_mese = quantitàConsiderevoleRiparazioni() * Data::oggi().getGiorno / 30 ;
+    unsigned int n_riparazioni_considerevoli_nel_mese = quantitàConsiderevoleRiparazioni() * Data::oggi().getGiorno / 31 ;
     float bonus_quantità_riparazioni = calcoloBonusLineare( 0.5,
                                                             n_riparazioni_mese / n_riparazioni_considerevoli_nel_mese,
                                                             Conv::bonus_n_riparazioni_considerevole );
@@ -52,5 +54,9 @@ unsigned int Manutenzione::getPercRiparazioniInefficaci() const{
 }
 
 unsigned int Manutenzione::getNRiparazioniMese() const{
+
+}
+
+void Manutenzione::setNRiparazioniMese(unsigned int riparazioni){
 
 }

@@ -31,7 +31,7 @@ unsigned int Hardware::gradoEsperienza()  const{
 
 bool Hardware::produttivo() const{
     // Vene calcolato confrontando quanti sistemi ha acquisito fin ora nel mese con il numero di quelli che un impiegato hardware generico dovrebbe aver acquisito fin ora
-    float punto_del_mese = static_cast<float>(Data::oggi().getGiorno()) / 30.0f;
+    float punto_del_mese = static_cast<float>(Data::oggi().getGiorno()) / 31.0f;
     int media_nuovi_sistemi_presente = static_cast<int>( punto_del_mese * Conv::media_n_nuovi_sistemi_mese );
 
     return Employee::produttivo() || (nuovi_gestiti > media_nuovi_sistemi_presente);

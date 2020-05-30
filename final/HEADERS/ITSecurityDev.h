@@ -30,6 +30,17 @@ public:
     /**     VELOCITÀ SCRITTURA              (metodo che eredita l'obbiettivo della classe base Software)*/
     virtual double velocitàScrittura() const;
 
+    /**     COMMIT PROBLEMA RISOLTO         (metodo booleano)
+     * Il metodo consente di fare il commit di una manutenzione andata a buon fine facendo distinzione se questa
+     * ha trattato un problema critico, e riturna true sse la procedura è andata a buon fine
+     */
+    bool commitProblemaRisolto(bool isCriticità = false);
+
+
+    unsigned int getNManutenzioniNonCritiche() const;
+    unsigned int getNManutenzioniCritiche() const;
+
+
 protected:
 
     /*      VALORE LAVORO                   (metodo che eredita l'obbiettivo della classe base)*/
@@ -38,24 +49,33 @@ protected:
     /**     RIUTILIZZABILITÀ                (metodo che eredita l'obbiettivo della classe base Software)*/
     virtual unsigned int riutilizzabilità() const;
 
+    /**     INFLUENZA PROGETTO              (metodo che eredita l'obbiettivo della classe base Software)*/
+    virtual double influenzaProgetto() const;
+
     /**     REMUNERAZIONE ORA ROUTINE       (metodo che eredita l'obbiettivo della classe: Employee)*/
     virtual float remunerazioneOraRoutine() const;
 
+    /*      VALORE RIPARAZIONE              (metodo che eredita l'obbiettivo della classe base Manutenzione)*/
+    virtual float valoreMedioRiparazione() const;
+
+    /*      QUANTITÀ CONSIDEREVOLE RIPARAZIONI         (metodo che eredita l'obbiettivo della classe base Manutenzione)*/  
+    virtual unsigned int quantitàConsiderevoleRiparazioni() const;
+
+
 private:
 
-    static const float VALORE_ORA_ROUTINE = 10;
+    unsigned int righeManutenzioneNonCritica() const;
 
-    static const float perdita_breccia = 10;
-
-    static const double perc_lavoro_falle = 0.4;
-
+    double mediaNManutenzioniPerProgetto() const;
 
 /**
  * CAMPI MENSILI
  */
-    unsigned int num_falle_aperte;   
-    unsigned int num_progetti_da_visionare;          
-    unsigned int num_falle_risolte;                                          
+    unsigned int n_problemi_irrsolti;   
+
+    unsigned int n_progetti_in_arrivo;   
+           
+    unsigned int n_criticità_risolte;                                          
 };
 
 #endif //CSVPARSER_ITSECURITYDEV_H

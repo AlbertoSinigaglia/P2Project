@@ -56,7 +56,7 @@ bool Employee::produttivo() const {
      * importante: "valuta se il valore che da all'azienda è maggiore di quanto recepisce"
      * QUESTA È UNA CONDIZIONE NON STRETTAMENTE NECESSARIA ALLA PRODUTTIVITÀ
      */
-    float remunerazione_effettiva = calcolaStipendio() * static_cast<float>(Data::oggi().getGiono) / 30.0f;
+    float remunerazione_effettiva = calcolaStipendio() * static_cast<float>(Data::oggi().getGiono) / 31.0f;
     float remunerazione_meritata = valoreLavoro() * Conv::perc_remunerazione;
 
     return (remunerazione_meritata >= remunerazione_effettiva);

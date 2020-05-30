@@ -71,7 +71,7 @@ protected:
     /**     INFLUENZA PROGETTO              (metodo reale)
      * Il metodo ritorna un rapporto che esprime una maggiore o minore influenza nella produzione del progetto
      * Il contributo che da lo sviluppatore in questione viene rapportato a quello di un generico sviluppatore
-     * perciò ratio 1 -> nella media, maggiore -> contributo maggiore
+     * perciò il contributo dello sviluppatore = influenzaProgetto() * contributo sviluppatore medio ( = dimensione_progetto/n_impiegati_per_progetto)
      */
     virtual double influenzaProgetto() const; 
 

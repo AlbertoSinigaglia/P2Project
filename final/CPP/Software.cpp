@@ -32,8 +32,10 @@ unsigned int Software::gradoEsperienza() const{
 double Software::velocitàScrittura() const{
     // ogni linguaggio introduce un aumento o decremento di velocità dovuto alla sua complessità
     double velocità_linguaggio = Conv::velocità_cpp / Conv::complessità_linguaggio[linguaggio];
-    // malus (-20%) per scarsa esperienza
-    double malus_exp = velocità_linguaggio * 0.2;
+
+    // tolgo un malus alla velocità di scrittura proporzionale all'esperienza se questa è inferiore alla sufficienza ( 6 )
+    double malus_exp = velocità_linguaggio 
+                      * calcoloBonusLineare( 6 , (10 - gradoEsperienza())/10.0 , Conv::malus_inseperto_scrittura);
 
     return velocità_linguaggio - malus_exp;
 }

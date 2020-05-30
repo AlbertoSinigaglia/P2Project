@@ -53,7 +53,7 @@ protected:
     virtual unsigned int oreLavoroNelMese() const;
 
     /*      QUANTITÀ CONSIDEREVOLE RIPARAZIONI         (metodo che eredita l'obbiettivo della classe base)*/  
-    virtual unsigned int quantitàConsiderevoleRiparazioni() const = 0;
+    virtual unsigned int quantitàConsiderevoleRiparazioni() const;
 
 
 private:
@@ -69,7 +69,9 @@ private:
  * CAMPI MENSILI
  */
     unsigned int perc_riparazioni_sussistenti;
+
     unsigned int ore_stallo_mensili;
+    
     unsigned int ore_straordinari;
 };
 

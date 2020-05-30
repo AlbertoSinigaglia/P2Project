@@ -81,14 +81,14 @@ struct DatiRiparazioneSistemi{
 // Campi dati estesi dalla classe ITSecurityDev
 
 struct DatiRipristinoSicurezza{
-    unsigned int num_falle_aperte;   
-    unsigned int num_progetti_da_visionare;          
-    unsigned int num_falle_risolte;  
+    unsigned int n_problemi_irrsolti;   
+    unsigned int n_progetti_in_arrivo;          
+    unsigned int n_criticità_risolte;  
 
-    DatiRipristinoSicurezza(unsigned int nfa = 0, unsigned int npdv = 0, unsigned int nfr = 0):
-            num_falle_aperte(nfa),
-            num_progetti_da_visionare(npdv),
-            num_falle_risolte(nfr){}
+    DatiRipristinoSicurezza(unsigned int npi = 0, unsigned int npin = 0, unsigned int ncr = 0):
+            n_problemi_irrsolti(npi),
+            n_progetti_in_arrivo(npin),
+            n_criticità_risolte(ncr){}
 };
 
 // Campi dati estesi dalla classe BackDev

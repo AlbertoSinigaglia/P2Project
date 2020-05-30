@@ -45,6 +45,7 @@ protected:
 
     unsigned int getPercRiparazioniInefficaci() const;
     unsigned int getNRiparazioniMese() const;
+    void setNRiparazioniMese(unsigned int);
 
 
 private:
