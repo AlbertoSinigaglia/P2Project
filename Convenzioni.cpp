@@ -128,8 +128,15 @@ namespace Conv{         // CONVENZIONI
 // BACKDEV
 // ------- 
 
+    const double perc_media_capo_progetto = 0.4;
 
+    const double perc_velocità_astrazione_5 = 0.8;
+    const double malus_velocità_prove_corettezza = 0.8;
 
+    const unsigned int riutilizzo_astrazione_5 = 50;
+
+    const float valore_capo_un_progetto = 100;
+    const float valore_astrazione_5_un_progetto = 100;
 
 // -----
 // DBDEV
@@ -142,7 +149,15 @@ namespace Conv{         // CONVENZIONI
 // FRONTDEV
 // --------
 
+    /*  array di corrispondenze: Libreria -> grado relativo di esaustività e evolvibilità della libreria,
+        esaustività relativa libreria(i) = numero di unità di codice di tale libreria sfruttate in un progetto mediamente 
+                                            / il numero di unità impiegate con ANGULAR
+        evolvibilità della libreria(i) = numero di anni previsti di aggiornamento delle classi della libreria (i) / quelli previsti per la libreria ANGULAR
+    */
+    const float esaustivita_libreria[5] = { 0.8 , 1.2 , 0.9 , 1 , 0.5};
+    const float evolvibilita_libreria[5] = { 0.9 , 1.1 , 0.7 , 1 , 0.9};
 
+    const float speed_up_angular = 2.0;
 
 
 // ------
@@ -210,11 +225,14 @@ namespace Conv{         // CONVENZIONI
 // ITSECURITYDEV
 // -------------
 
-    const float bonus_
+    const float bonus_delle_50_criticità = 100;
 
 // -------
 // BACKDEV
 // -------
+
+    const float bonus_sempre_capo_progetto = 100;
+    const float bonus_prove_correttezza = 100;
 
 // -----
 // DBDEV

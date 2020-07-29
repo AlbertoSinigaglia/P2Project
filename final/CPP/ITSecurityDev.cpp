@@ -42,7 +42,7 @@ double ITSecurityDev::influenzaProgetto() const{
 
 
 double ITSecurityDev::velocitàScrittura() const{
-    // Il codice scritto da un esperto di sicurezza è essenzialmente più uniforme al codice degli altri sviluppatori perciò ha un proprio speed-Up d2l 120%
+    // Il codice scritto da un esperto di sicurezza è essenzialmente più uniforme rispetto al codice degli altri sviluppatori perciò ha un proprio speed-Up d2l 120%
     return Software::velocitàScrittura() * 1.20;
 }
 
@@ -94,11 +94,8 @@ float ITSecurityDev::valoreLavoro() const{
 
 bool ITSecurityDev::produttivo() const{
 
-    if(n_problemi_irrsolti > Conv::tolleranza_n_problemi_aperti_mese)
-        return false;
-
-        else
-        return ( Manutenzione::produttivo() && Software::produttivo() );
+    bool condizione_sicurezza_accettabile = n_problemi_irrsolti > Conv::tolleranza_n_problemi_aperti_mese;
+    return condizione_sicurezza_accettabile && ( Manutenzione::produttivo() && Software::produttivo() );
 }
 
 

@@ -97,14 +97,12 @@ struct DatiLatoServer{
     double perc_capo_progetto;
     unsigned int livello_astrazione;
     bool prove_correttezza;
-    bool modellazione_struttura_dati;
     bool orientato_ortogonalità;
 
-    DatiLatoServer(double pcp, unsigned int la, bool pc, bool msd, bool oo):
+    DatiLatoServer(double pcp, unsigned int la, bool pc, bool oo):
             perc_capo_progetto(pcp),
             livello_astrazione(la),
             prove_correttezza(pc),
-            modellazione_struttura_dati(msd),
             orientato_ortogonalità(oo){}
 };
 

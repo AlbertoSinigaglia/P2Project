@@ -80,7 +80,8 @@ float Employee::calcoloBonusLineare(double percBase, double perc, float bonus_ma
     
     if(perc < percBase) return 0;
     if(perc > 1) return bonus_max;
-
+    //la seguente formula permette di calcolare il bonus sulla base di una proporzione (direttam. proporz.)
+    // che fa corrispondere perc. = percBase a bonus = 0  e  perc. = 1  a bonus = bonusMax
     return (bonus_max / (1-percBase)) * (perc - percBase);
 }
 

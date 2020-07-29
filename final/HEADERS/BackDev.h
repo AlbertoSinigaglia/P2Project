@@ -20,9 +20,6 @@ public:
     /*      BOUNS STIPENDIO                 (metodo che eredita l'obbiettivo della classe base)*/
     virtual float bonusStipendio() const;
 
-    /*      AGGIORNA MESE                   (metodo che eredita l'obbiettivo della classe base)*/
-    virtual void aggiornaMese();
-
     /**     VELOCITÀ SCRITTURA              (metodo che eredita l'obbiettivo della classe base)*/
     virtual double velocitàScrittura() const;
 
@@ -43,7 +40,6 @@ private:
     unsigned int livello_astrazione;
 
     bool prove_correttezza;
-    bool modellazione_struttura_dati;
     bool orientato_ortogonalità;
     
 };

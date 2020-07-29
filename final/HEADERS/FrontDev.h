@@ -37,13 +37,10 @@ protected:
 
 private:
 
-    static const float ESAUSTIVITÀ_LIBRERIA[5];
-    static const float EVOLVIBILITÀ_LIBRERIA[5];
-
     Conv::Libreria libreria;
     
-    bool orientato_professionalità;
-
+    bool orientato_professionaità;
+l
     double perc_righe_esterne;         // percentuale delle righe derivanti da strumenti di design automation o codice copiato 
     double perc_codice_perfezionato;   // percentuale di codice esterno perfezionato 
 
